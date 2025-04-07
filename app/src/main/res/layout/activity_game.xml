@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.GameActivity">
+
+
+
+    <ImageView
+        android:id="@+id/imgSelectedCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvIsCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="La categoria de la pregunta es..."
+        app:layout_constraintBottom_toTopOf="@+id/imgSelectedCategory"
+        app:layout_constraintEnd_toEndOf="@+id/imgSelectedCategory"
+        app:layout_constraintStart_toStartOf="@+id/imgSelectedCategory" />
+
+    <Button
+        android:id="@+id/btnWithdraw"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="32dp"
+        android:text="Retirarse"
+        app:layout_constraintBottom_toTopOf="@+id/tvIsCategory"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSelectingCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="42dp"
+        android:text="Escogiendo categoria"
+        app:layout_constraintBottom_toTopOf="@+id/tvIsCategory"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/btnWithdraw"
+        tools:layout_editor_absoluteX="1dp" />
+
+    <TextView
+        android:id="@+id/tvCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/imgSelectedCategory"
+        app:layout_constraintStart_toStartOf="@+id/imgSelectedCategory"
+        app:layout_constraintTop_toBottomOf="@+id/imgSelectedCategory" />
+
+    <ImageView
+        android:id="@+id/imgCategory1"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_margin="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgCategory2" />
+
+    <ImageView
+        android:id="@+id/imgCategory2"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_margin="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgCategory1"
+        app:layout_constraintEnd_toStartOf="@+id/imgCategory3" />
+
+    <ImageView
+        android:id="@+id/imgCategory3"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_margin="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgCategory2"
+        app:layout_constraintEnd_toStartOf="@+id/imgCategory4" />
+
+    <ImageView
+        android:id="@+id/imgCategory4"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_margin="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgCategory3"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

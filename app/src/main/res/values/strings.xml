@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">QuizzBattle</string>
+    <string name="quizz_battle_title">QUIZZ BATTLE</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="register_link">¿No tienes cuenta?\nÚnete ya a Quizz Battle</string>
+
+</resources>
