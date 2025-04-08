@@ -9,16 +9,20 @@
 
     <ImageView
         android:id="@+id/imgSelectedCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/ic_launcher_background"
+        android:scaleType="fitCenter"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toTopOf="@+id/imgCategory3"
+        app:layout_constraintDimensionRatio="16:8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnWithdraw" />
 
     <TextView
-        android:id="@+id/tvIsCategory"
+        android:id="@+id/tvQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="La categoria de la pregunta es..."
@@ -30,10 +34,12 @@
     <Button
         android:id="@+id/btnWithdraw"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="38dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Retirarse"
+        android:textSize="13dp"
+        android:padding="1dp"
         app:cornerRadius="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
