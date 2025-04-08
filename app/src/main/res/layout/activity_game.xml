@@ -7,56 +7,55 @@
     tools:context=".ui.GameActivity">
 
 
-
     <ImageView
         android:id="@+id/imgSelectedCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:src="@drawable/ic_launcher_background"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imgCategory3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnWithdraw" />
 
     <TextView
         android:id="@+id/tvIsCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:text="La categoria de la pregunta es..."
         app:layout_constraintBottom_toTopOf="@+id/imgSelectedCategory"
-        app:layout_constraintEnd_toEndOf="@+id/imgSelectedCategory"
-        app:layout_constraintStart_toStartOf="@+id/imgSelectedCategory" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSelectingCategory" />
 
     <Button
         android:id="@+id/btnWithdraw"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:text="Retirarse"
-        app:layout_constraintBottom_toTopOf="@+id/tvIsCategory"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:cornerRadius="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <TextView
         android:id="@+id/tvSelectingCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="42dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="24dp"
         android:text="Escogiendo categoria"
-        app:layout_constraintBottom_toTopOf="@+id/tvIsCategory"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="12dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/btnWithdraw"
-        tools:layout_editor_absoluteX="1dp" />
+        app:layout_constraintTop_toBottomOf="@+id/imgProfilePlayer2"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/tvCategory"
@@ -70,42 +69,187 @@
     <ImageView
         android:id="@+id/imgCategory1"
         android:layout_width="0dp"
-        android:layout_height="93dp"
-        android:src="@drawable/ic_launcher_background"
+        android:layout_height="85dp"
         android:layout_margin="4dp"
+        android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imgCategory2" />
+        app:layout_constraintEnd_toStartOf="@+id/imgCategory2"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imgCategory2"
         android:layout_width="0dp"
-        android:layout_height="93dp"
-        android:src="@drawable/ic_launcher_background"
+        android:layout_height="85dp"
         android:layout_margin="4dp"
+        android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgCategory1"
-        app:layout_constraintEnd_toStartOf="@+id/imgCategory3" />
+        app:layout_constraintEnd_toStartOf="@+id/imgCategory3"
+        app:layout_constraintStart_toEndOf="@+id/imgCategory1" />
 
     <ImageView
         android:id="@+id/imgCategory3"
         android:layout_width="0dp"
-        android:layout_height="93dp"
-        android:src="@drawable/ic_launcher_background"
+        android:layout_height="85dp"
         android:layout_margin="4dp"
+        android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgCategory2"
-        app:layout_constraintEnd_toStartOf="@+id/imgCategory4" />
+        app:layout_constraintEnd_toStartOf="@+id/imgCategory4"
+        app:layout_constraintStart_toEndOf="@+id/imgCategory2" />
 
     <ImageView
         android:id="@+id/imgCategory4"
         android:layout_width="0dp"
-        android:layout_height="93dp"
-        android:src="@drawable/ic_launcher_background"
+        android:layout_height="85dp"
         android:layout_margin="4dp"
+        android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgCategory3"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgCategory3" />
+
+    <ImageView
+        android:id="@+id/imgProfilePlayer1"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_user" />
+
+    <ImageView
+        android:id="@+id/imgProfilePlayer2"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentPointsPlayer1"
+        app:srcCompat="@drawable/img_user" />
+
+    <ImageView
+        android:id="@+id/imgStar1Player2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer2"
+        app:layout_constraintEnd_toStartOf="@+id/imgProfilePlayer2"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer2"
+        app:srcCompat="@drawable/baseline_star_off" />
+
+    <ImageView
+        android:id="@+id/imgStar1Player1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer1"
+        app:layout_constraintStart_toEndOf="@+id/imgProfilePlayer1"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer1"
+        app:srcCompat="@drawable/baseline_star_off" />
+
+    <ImageView
+        android:id="@+id/imgStar2Player1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer1"
+        app:layout_constraintStart_toEndOf="@+id/imgStar1Player1"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer1"
+        app:srcCompat="@drawable/baseline_star_off" />
+
+    <ImageView
+        android:id="@+id/imgStar3Player1"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer1"
+        app:layout_constraintStart_toEndOf="@+id/imgStar2Player1"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer1"
+        app:srcCompat="@drawable/baseline_star_off" />
+
+    <ImageView
+        android:id="@+id/imgStar2Player2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer2"
+        app:layout_constraintEnd_toStartOf="@+id/imgStar1Player2"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer2"
+        app:srcCompat="@drawable/baseline_star_off" />
+
+    <ImageView
+        android:id="@+id/imgStar3Player2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer2"
+        app:layout_constraintEnd_toStartOf="@+id/imgStar2Player2"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer2"
+        app:srcCompat="@drawable/baseline_star_off" />
+
+    <TextView
+        android:id="@+id/tvDefaultPointsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Puntos:"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer2" />
+
+    <TextView
+        android:id="@+id/tvDefaultPointsText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Puntos:"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDefaultMaxPointsText2"
+        app:layout_constraintEnd_toStartOf="@+id/tvCurrentPointsPlayer1"
+        app:layout_constraintTop_toTopOf="@+id/tvDefaultMaxPointsText2" />
+
+    <TextView
+        android:id="@+id/tvCurrentPointsPlayer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="1dp"
+        android:text="0"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer2"
+        app:layout_constraintStart_toEndOf="@+id/tvDefaultPointsText"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer2" />
+
+    <TextView
+        android:id="@+id/tvDefaultMaxPointsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="1dp"
+        android:text="/ 5"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer2"
+        app:layout_constraintStart_toEndOf="@+id/tvCurrentPointsPlayer2"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer2"
+        app:layout_constraintVertical_bias="0.511" />
+
+    <TextView
+        android:id="@+id/tvDefaultMaxPointsText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="16dp"
+        android:text="/ 5"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePlayer1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePlayer1" />
+
+    <TextView
+        android:id="@+id/tvCurrentPointsPlayer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:text="0"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDefaultMaxPointsText2"
+        app:layout_constraintEnd_toStartOf="@+id/tvDefaultMaxPointsText2"
+        app:layout_constraintTop_toTopOf="@+id/tvDefaultMaxPointsText2"
+        app:layout_constraintVertical_bias="0.522" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

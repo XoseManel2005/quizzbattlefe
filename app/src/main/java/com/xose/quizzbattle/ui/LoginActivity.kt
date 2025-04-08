@@ -16,6 +16,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
         val tvRegisterIntent = findViewById<TextView>(R.id.tvGenericText)
         val text = getString(R.string.register_link)
         val spannable = SpannableString(text)
@@ -29,6 +30,10 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        btnLogin.setOnClickListener {
+            val intent = Intent(this, GameActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }
