@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.widget.ImageView
 import com.xose.quizzbattle.R
 
-class GameActivity : AppCompatActivity() {
+class CategoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_game)
+        setContentView(R.layout.activity_category)
 
-        val imgCategory = findViewById<ImageView>(R.id.imgSelectedCategory)
+        val imgCategory = findViewById<ImageView>(R.id.imgQuestion)
 
 
         imgCategory.setOnClickListener {

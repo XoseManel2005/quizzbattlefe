@@ -8,7 +8,6 @@ import android.text.style.UnderlineSpan
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import com.xose.quizzbattle.R
 
 class LoginActivity : AppCompatActivity() {
@@ -31,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-            val intent = Intent(this, GameActivity::class.java)
+            val intent = Intent(this, CategoryActivity::class.java)
             startActivity(intent)
         }
 

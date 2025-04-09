@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.GameActivity">
+    tools:context=".ui.CategoryActivity">
 
 
     <ImageView
-        android:id="@+id/imgSelectedCategory"
+        android:id="@+id/imgQuestion"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/ic_launcher_background"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="La categoria de la pregunta es..."
-        app:layout_constraintBottom_toTopOf="@+id/imgSelectedCategory"
+        app:layout_constraintBottom_toTopOf="@+id/imgQuestion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSelectingCategory" />
@@ -68,9 +68,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/imgSelectedCategory"
-        app:layout_constraintStart_toStartOf="@+id/imgSelectedCategory"
-        app:layout_constraintTop_toBottomOf="@+id/imgSelectedCategory" />
+        app:layout_constraintEnd_toEndOf="@+id/imgQuestion"
+        app:layout_constraintStart_toStartOf="@+id/imgQuestion"
+        app:layout_constraintTop_toBottomOf="@+id/imgQuestion" />
 
     <ImageView
         android:id="@+id/imgCategory1"

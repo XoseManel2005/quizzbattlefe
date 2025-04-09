@@ -206,29 +206,32 @@
 
     <TextView
         android:id="@+id/tvQuestion"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="La categoria de la pregunta es..."
-        app:layout_constraintBottom_toTopOf="@+id/imgSelectedCategory"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="center"
+        android:text="El campeón de ajedrez bajo el agua en 2021 fue..."
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/imgQuestion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTimeRemaining" />
 
     <ImageView
-        android:id="@+id/imgSelectedCategory"
+        android:id="@+id/imgQuestion"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher_background"
+        android:layout_marginTop="35dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toTopOf="@+id/btnAnswer1"
         app:layout_constraintDimensionRatio="16:8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvQuestion"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnWithdraw"/>
 
 
     <Button
