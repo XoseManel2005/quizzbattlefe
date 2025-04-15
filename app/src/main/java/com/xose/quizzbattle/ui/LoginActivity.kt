@@ -1,6 +1,5 @@
 package com.xose.quizzbattle.ui
 
-import SessionManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +7,7 @@ import retrofit2.Call
 import retrofit2.Response
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -16,7 +16,8 @@ import androidx.core.content.ContextCompat
 import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.model.LoginRequest
-import com.xose.quizzbattle.model.LoginResponse
+import com.xose.quizzbattle.model.User
+import com.xose.quizzbattle.util.SessionManager
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,16 +49,30 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Mostrar datos antes de enviarlos
+            Log.d("LOGIN_DEBUG", "Usuario: $username")
+            Log.d("LOGIN_DEBUG", "Contraseña: ${"*".repeat(password.length)}")
+
             val loginRequest = LoginRequest(username, password)
-
             val call = ApiClient.apiService.login(loginRequest)
-            call.enqueue(object : retrofit2.Callback<LoginResponse> {
-                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    if (response.isSuccessful) {
-                        val token = response.body()?.token ?: ""
-                        SessionManager(this@LoginActivity).saveAuthToken(token)
+            val sessionManager = SessionManager(this@LoginActivity)
 
-                        val intent = Intent(this@LoginActivity, CategoryActivity::class.java)
+            call.enqueue(object : retrofit2.Callback<User> {
+                override fun onResponse(call: Call<User>, response: Response<User>) {
+                    if (response.isSuccessful) {
+                        val user = response.body()
+
+                        // Obtener token del header
+                        val token = response.headers()["authorization"]?.removePrefix("Bearer ") ?: ""
+
+                        sessionManager.saveAuthToken(token)
+                        sessionManager.saveLoggedUser(user)
+
+                        // Comprobación después de guardar
+                        Log.d("LoginDebug", "Token guardado: ${sessionManager.getAuthToken()}")
+                        Log.d("LoginDebug", "Usuario guardado: ${sessionManager.getLoggedUser().toString()}")
+
+                        val intent = Intent(this@LoginActivity, GamesActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
@@ -65,8 +80,9 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                override fun onFailure(call: Call<User>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, "Error de red: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.d("LOGIN_ERROR","Error de red: ${t.message}")
                 }
             })
         }

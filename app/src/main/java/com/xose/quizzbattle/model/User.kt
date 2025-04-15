@@ -7,17 +7,14 @@ import kotlinx.datetime.LocalDateTime as KLocalDateTime
 
 @Serializable
 open class User(
-    val id: Long = 0,                        // Valor por defecto para 'id'
-    var username: String? = null,
-    var email: String,
+    val id: Long? = null,                        // Valor por defecto para 'id'
+    var username: String,
+    var email: String? = null,
     var password: String,
     var role: Role = Role.PLAYER,            // Valor por defecto para 'role'
     var googleId: String? = null,
     var fcmToken: String? = null,
-    var profilePicture: String? = null,
-    @Contextual var createdAt: KLocalDateTime? = null,
-    @Contextual var updatedAt: KLocalDateTime? = null,
-    @Contextual var lastLogin: KLocalDateTime? = null
+    var profilePicture: String? = null
 )
 {
 
@@ -25,6 +22,10 @@ open class User(
     enum class Role {
         ADMIN,
         PLAYER
+    }
+
+    override fun toString(): String {
+        return "User(id=$id, username='$username', email=$email, role=$role, googleId=$googleId, fcmToken=$fcmToken, profilePicture=$profilePicture)"
     }
 
     // Método para obtener información básica del usuario

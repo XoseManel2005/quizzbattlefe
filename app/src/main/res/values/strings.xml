@@ -6,5 +6,6 @@
     <string name="password">password</string>
     <string name="register_link">¿No tienes cuenta?\nÚnete ya a Quizz Battle</string>
     <string name="username">username</string>
+    <string name="avatar" />
 
 </resources>
