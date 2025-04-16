@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
             Log.d("LOGIN_DEBUG", "Contraseña: ${"*".repeat(password.length)}")
 
             val loginRequest = LoginRequest(username, password)
-            val call = ApiClient.apiService.login(loginRequest)
+            val call = ApiClient.getClientService(this).login(loginRequest)
             val sessionManager = SessionManager(this@LoginActivity)
 
             call.enqueue(object : retrofit2.Callback<User> {
