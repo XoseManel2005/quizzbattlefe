@@ -35,8 +35,8 @@ class GameAdapter(
         val esTurnoDelUsuario = partida.turn?.username == usuarioLogueado.username
 
         val oponente = if (partida.player1?.username == usuarioLogueado.username) partida.player2 else partida.player1
-        val puntosUsuario = if (partida.player1?.username == usuarioLogueado.username) partida.scorePlayer1 else partida.scorePlayer2
-        val puntosOponente = if (partida.player1?.username == usuarioLogueado.username) partida.scorePlayer2 else partida.scorePlayer1
+        val puntosUsuario = if (partida.player1?.username == usuarioLogueado.username) partida.starsPlayer1 else partida.starsPlayer2
+        val puntosOponente = if (partida.player1?.username == usuarioLogueado.username) partida.starsPlayer2 else partida.starsPlayer1
 
         holder.txtNombre.text = oponente?.username ?: "Desconocido"
         holder.txtResultado.text = "$puntosUsuario-$puntosOponente"

@@ -7,5 +7,5 @@ import retrofit2.http.Query
 
 interface GameService {
     @GET("games/find/all")
-    suspend fun getGames(@Query("username") username: String): List<Game>
+    suspend fun getGames(@Query("username") username: String, @Query("status") status: String): List<Game>
 }

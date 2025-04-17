@@ -9,16 +9,16 @@
     <View
         android:id="@+id/divider2"
         android:layout_width="wrap_content"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginBottom="8dp"
         android:background="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/imgProfilePlayer"
+        app:layout_constraintBottom_toTopOf="@+id/imgNewGame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imgProfilePlayer"
+        android:id="@+id/imgNewGame"
         android:layout_width="70dp"
         android:layout_height="65dp"
         android:layout_marginBottom="8dp"
@@ -28,24 +28,24 @@
         app:srcCompat="@drawable/img_user" />
 
     <ImageView
-        android:id="@+id/imgProfilePlayer4"
+        android:id="@+id/imgFriendships"
         android:layout_width="70dp"
         android:layout_height="65dp"
         android:layout_marginStart="40dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgProfilePlayer"
+        app:layout_constraintStart_toEndOf="@+id/imgNewGame"
         app:srcCompat="@drawable/img_user" />
 
     <ImageView
-        android:id="@+id/imgProfilePlayer3"
+        android:id="@+id/imgProfile"
         android:layout_width="70dp"
         android:layout_height="65dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imgProfilePlayer"
+        app:layout_constraintEnd_toStartOf="@+id/imgNewGame"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/img_user" />
 
@@ -53,7 +53,7 @@
         android:id="@+id/tvQuizzBattle3"
         android:layout_width="wrap_content"
         android:layout_height="52dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="@string/quizz_battle_title"
         android:textAlignment="center"
         android:textSize="38sp"
@@ -66,10 +66,9 @@
         android:id="@+id/rvPartidas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="parent"

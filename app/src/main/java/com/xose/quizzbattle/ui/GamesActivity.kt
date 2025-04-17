@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.data.GameService
+import com.xose.quizzbattle.model.Game
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import kotlinx.coroutines.launch
@@ -34,7 +35,7 @@ class GamesActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val games = gameService.getGames(username = usuarioLogueado.username)
+                val games = gameService.getGames(username = usuarioLogueado.username, status = Game.Status.ONGOING.toString())
                 adapter = GameAdapter(games, usuarioLogueado) { selectedGame ->
                     Log.d("LOAD_GAMES", "${selectedGame.toString()}")
                 }
