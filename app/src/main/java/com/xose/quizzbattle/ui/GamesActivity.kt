@@ -1,5 +1,6 @@
 package com.xose.quizzbattle.ui
 
+import FinishedGameAdapter
 import GameAdapter
 import android.os.Bundle
 import android.util.Log
@@ -19,7 +20,9 @@ import kotlinx.coroutines.launch
 class GamesActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerViewFinished: RecyclerView
     private lateinit var adapter: GameAdapter
+    private lateinit var adapterFinished: FinishedGameAdapter
     private lateinit var gameService: GameService
     private lateinit var usuarioLogueado: User
 
@@ -29,6 +32,9 @@ class GamesActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.rvPartidas)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        recyclerViewFinished = findViewById(R.id.rvPartidasAcabadas)
+        recyclerViewFinished.layoutManager = LinearLayoutManager(this)
 
         usuarioLogueado = SessionManager(this).getLoggedUser() ?: return
         gameService = ApiClient.getGameService(this)
@@ -40,6 +46,16 @@ class GamesActivity : AppCompatActivity() {
                     Log.d("LOAD_GAMES", "${selectedGame.toString()}")
                 }
                 recyclerView.adapter = adapter
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@GamesActivity, "Error al cargar partidas: ${e.message}", Toast.LENGTH_LONG).show()
+                Log.d("LOAD_GAMES", "Error al cargar partidas: ${e.message}")
+            }
+
+            try {
+                val games = gameService.getGames(username = usuarioLogueado.username, status = Game.Status.FINISHED.toString())
+                adapterFinished = FinishedGameAdapter(games, usuarioLogueado)
+                recyclerViewFinished.adapter = adapterFinished
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this@GamesActivity, "Error al cargar partidas: ${e.message}", Toast.LENGTH_LONG).show()
