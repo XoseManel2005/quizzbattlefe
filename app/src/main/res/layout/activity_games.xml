@@ -1,136 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.GamesActivity">
+    android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/divider2"
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvQuizzBattle3"
         android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/imgNewGame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <View
-        android:id="@+id/divider4"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_height="wrap_content"
+        android:text="Quizz Battle"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvOngoing" />
-
-    <View
-        android:id="@+id/divider5"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:background="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvOngoing2" />
+        android:layout_marginTop="16dp"/>
 
+    <!-- Contenedor de fragments -->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@id/imgNewGame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnOngoing" />
+
+    <!-- Botones inferiores -->
     <ImageView
         android:id="@+id/imgNewGame"
         android:layout_width="70dp"
         android:layout_height="65dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/img_user" />
+        android:layout_marginStart="32dp"
+        android:src="@drawable/img_user" />
 
     <ImageView
         android:id="@+id/imgFriendships"
         android:layout_width="70dp"
         android:layout_height="65dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgNewGame"
-        app:srcCompat="@drawable/img_user" />
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/img_user" />
 
     <ImageView
         android:id="@+id/imgProfile"
         android:layout_width="70dp"
         android:layout_height="65dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imgNewGame"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/img_user" />
+        app:layout_constraintStart_toEndOf="@id/imgNewGame"
+        app:layout_constraintEnd_toStartOf="@id/imgFriendships"
+        android:src="@drawable/img_user" />
 
-    <TextView
-        android:id="@+id/tvQuizzBattle3"
-        android:layout_width="wrap_content"
-        android:layout_height="52dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/quizz_battle_title"
-        android:textAlignment="center"
-        android:textSize="38sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvOngoing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="EN CURSO"
-        android:textAlignment="center"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvQuizzBattle3" />
-
-    <TextView
-        android:id="@+id/tvOngoing2"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnOngoing"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:text="EN CURSO"
+        android:textColor="#000000"
+        app:cornerRadius="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnFinished"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@+id/fragmentContainer"
+        app:layout_constraintTop_toBottomOf="@+id/tvQuizzBattle3" />
+
+
+    <Button
+        android:id="@+id/btnFinished"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="ACABADAS"
-        android:textAlignment="center"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvPartidas" />
+        android:textColor="#000000"
+        app:cornerRadius="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/fragmentContainer"
+        app:layout_constraintStart_toEndOf="@+id/btnOngoing"
+        app:layout_constraintTop_toTopOf="@+id/btnOngoing" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPartidas"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider4" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPartidasAcabadas"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
