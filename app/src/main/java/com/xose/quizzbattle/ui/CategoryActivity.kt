@@ -8,10 +8,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.model.Category
+import com.xose.quizzbattle.model.Game
 import com.xose.quizzbattle.util.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,7 +40,10 @@ class CategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
 
-
+        val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
+        game?.let {
+            Log.d("CATEGORY_ACTIVITY", "Recibido game: $game")
+        }
 
         val imgCategory = findViewById<ImageView>(R.id.imgQuestion)
         val withdraw = findViewById<Button>(R.id.btnWithdraw)
