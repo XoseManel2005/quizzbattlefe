@@ -11,21 +11,23 @@
         android:id="@+id/imgQuestion"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/ic_launcher_background"
-        android:scaleType="fitCenter"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/category_science"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toTopOf="@+id/imgCategory3"
-        app:layout_constraintDimensionRatio="16:8"
+        app:layout_constraintDimensionRatio="16:12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnWithdraw" />
 
     <TextView
-        android:id="@+id/tvQuestion"
+        android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="La categoria de la pregunta es..."
+        android:layout_marginTop="15dp"
         app:layout_constraintBottom_toTopOf="@+id/imgQuestion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +79,7 @@
         android:layout_width="0dp"
         android:layout_height="85dp"
         android:layout_margin="4dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/category_sports"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imgCategory2"
         app:layout_constraintStart_toStartOf="parent" />
@@ -87,7 +89,7 @@
         android:layout_width="0dp"
         android:layout_height="85dp"
         android:layout_margin="4dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/category_cinema"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imgCategory3"
         app:layout_constraintStart_toEndOf="@+id/imgCategory1" />
@@ -97,7 +99,7 @@
         android:layout_width="0dp"
         android:layout_height="85dp"
         android:layout_margin="4dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/category_science"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imgCategory4"
         app:layout_constraintStart_toEndOf="@+id/imgCategory2" />
@@ -107,7 +109,7 @@
         android:layout_width="0dp"
         android:layout_height="85dp"
         android:layout_margin="4dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/category_history"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imgCategory3" />

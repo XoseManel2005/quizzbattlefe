@@ -2,6 +2,7 @@ package com.xose.quizzbattle.ui
 
 import FinishedGameAdapter
 import GameAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -43,8 +44,11 @@ class GamesActivity : AppCompatActivity() {
             try {
                 val games = gameService.getGames(username = usuarioLogueado.username, status = Game.Status.ONGOING.toString())
                 adapter = GameAdapter(games, usuarioLogueado) { selectedGame ->
-                    Log.d("LOAD_GAMES", "${selectedGame.toString()}")
+                    val intent = Intent(this@GamesActivity, CategoryActivity::class.java)
+                    intent.putExtra("gameId", selectedGame.id)
+                    startActivity(intent)
                 }
+
                 recyclerView.adapter = adapter
             } catch (e: Exception) {
                 e.printStackTrace()
