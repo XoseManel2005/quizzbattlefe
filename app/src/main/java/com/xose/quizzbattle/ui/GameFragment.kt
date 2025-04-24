@@ -56,13 +56,12 @@ class GamesFragment : Fragment() {
                 }
             }
             try {
+
                 adapter = GameAdapter(userGames, usuarioLogueado) { selectedGame ->
                     val intent = Intent(requireContext(), CategoryActivity::class.java)
-                    intent.putExtra("gameId", selectedGame.id)
-                    Log.d("LOAD_GAMES", "$selectedGame")
                     startActivity(intent)
+                    Log.d("LOAD_GAMES", "$selectedGame")
                 }
-
                 recyclerView.adapter = adapter
             } catch (e: Exception) {
                 e.printStackTrace()

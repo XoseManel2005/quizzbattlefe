@@ -1,11 +1,14 @@
 package com.xose.quizzbattle.data
 
+import com.xose.quizzbattle.model.Category
 import com.xose.quizzbattle.model.LoginRequest
 import com.xose.quizzbattle.model.LoginResponse
 import com.xose.quizzbattle.model.RegisterRequest
 import com.xose.quizzbattle.model.User
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ApiService {
@@ -13,4 +16,8 @@ interface ApiService {
     fun login(@Body request: LoginRequest): Call<User>
     @POST("/users/save")
     fun register(@Body request: RegisterRequest): Call<User>
+    @GET("category/find/all")
+    fun getCategories(@Header("Authorization") token: String): Call<List<Category>>
+
+
 }
