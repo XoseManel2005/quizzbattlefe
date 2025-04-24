@@ -2,6 +2,7 @@ package com.xose.quizzbattle.ui
 
 import FinishedGameAdapter
 import GameAdapter
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.xose.quizzbattle.R
 import com.xose.quizzbattle.model.User
+import com.xose.quizzbattle.util.SessionManager
 
 class GamesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +20,7 @@ class GamesActivity : AppCompatActivity() {
 
         val btnOngoing = findViewById<Button>(R.id.btnOngoing)
         val btnFinished = findViewById<Button>(R.id.btnFinished)
-
+        val imgFriendships = findViewById<ImageView>(R.id.imgFriendships)
 // Mostrar fragmento de partidas por defecto
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, GamesFragment())
@@ -57,6 +59,12 @@ class GamesActivity : AppCompatActivity() {
         }
 
 
-        // Puedes hacer que imgFriendships abra otro fragmento
+        imgFriendships.setOnClickListener{
+            val sessionManager = SessionManager(this)
+            sessionManager.clearSession()
+
+            val intent = Intent (this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

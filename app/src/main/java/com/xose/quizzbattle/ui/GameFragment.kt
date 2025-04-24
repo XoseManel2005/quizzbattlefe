@@ -2,6 +2,7 @@ package com.xose.quizzbattle.ui
 
 import FinishedGameAdapter
 import GameAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -55,10 +56,13 @@ class GamesFragment : Fragment() {
                 }
             }
             try {
-
-                adapter = GameAdapter(userGames, usuarioLogueado) {
-                    Log.d("LOAD_GAMES", "$it")
+                adapter = GameAdapter(userGames, usuarioLogueado) { selectedGame ->
+                    val intent = Intent(requireContext(), CategoryActivity::class.java)
+                    intent.putExtra("gameId", selectedGame.id)
+                    Log.d("LOAD_GAMES", "$selectedGame")
+                    startActivity(intent)
                 }
+
                 recyclerView.adapter = adapter
             } catch (e: Exception) {
                 e.printStackTrace()
