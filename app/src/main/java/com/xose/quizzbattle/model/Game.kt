@@ -1,6 +1,6 @@
 package com.xose.quizzbattle.model
 
-import kotlinx.serialization.Serializable
+import java.io.Serializable
 
 data class Game(
     val id: Long,
@@ -13,12 +13,11 @@ data class Game(
     var starsPlayer1: Int = 0,
     var starsPlayer2: Int = 0,
     var winner: User
-) {
+) : Serializable {
 
-    @Serializable
-    enum class Status {
+    enum class Status : Serializable {
         ONGOING,
         FINISHED
     }
-
 }
+

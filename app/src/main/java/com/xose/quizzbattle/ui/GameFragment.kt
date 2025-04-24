@@ -59,6 +59,7 @@ class GamesFragment : Fragment() {
 
                 adapter = GameAdapter(userGames, usuarioLogueado) { selectedGame ->
                     val intent = Intent(requireContext(), CategoryActivity::class.java)
+                    intent.putExtra("SELECTED_GAME", selectedGame) // ahora sí funcionará
                     startActivity(intent)
                     Log.d("LOAD_GAMES", "$selectedGame")
                 }
