@@ -41,22 +41,37 @@ class CategoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_category)
 
         val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
-        game?.let {
-            Log.d("CATEGORY_ACTIVITY", "Recibido game: $game")
+        game?.let { gameData ->
+            // Actualizar estrellas del jugador 1
+            val starsPlayer1 = listOf(
+                findViewById<ImageView>(R.id.imgStar1Player1),
+                findViewById<ImageView>(R.id.imgStar2Player1),
+                findViewById<ImageView>(R.id.imgStar3Player1)
+            )
+
+            for (i in 0 until gameData.starsPlayer1.coerceAtMost(3)) {
+                starsPlayer1[i].setImageResource(R.drawable.baseline_star_on)
+            }
+
+            // Actualizar estrellas del jugador 2
+            val starsPlayer2 = listOf(
+                findViewById<ImageView>(R.id.imgStar1Player2),
+                findViewById<ImageView>(R.id.imgStar2Player2),
+                findViewById<ImageView>(R.id.imgStar3Player2)
+            )
+
+            for (i in 0 until gameData.starsPlayer2.coerceAtMost(3)) {
+                starsPlayer2[i].setImageResource(R.drawable.baseline_star_on)
+            }
+
+            // Actualizar puntos
+            findViewById<TextView>(R.id.tvCurrentPointsPlayer1).text = gameData.scorePlayer1.toString()
+            findViewById<TextView>(R.id.tvCurrentPointsPlayer2).text = gameData.scorePlayer2.toString()
         }
+
 
         val imgCategory = findViewById<ImageView>(R.id.imgQuestion)
         val withdraw = findViewById<Button>(R.id.btnWithdraw)
-
-
-        imgCategory.setOnClickListener {
-            finalCategory?.let {
-                val intent = Intent(this, QuestionActivity::class.java)
-                intent.putExtra("selectedCategoryId", it.id)
-                intent.putExtra("selectedCategoryName", it.name)
-                startActivity(intent)
-            }
-        }
 
         withdraw.setOnClickListener {
             val intent = Intent (this, GamesActivity::class.java)
@@ -123,19 +138,23 @@ class CategoryActivity : AppCompatActivity() {
 
                     findViewById<TextView>(R.id.tvCategory).text =
                         "Categoría: ${finalCategory?.name ?: "Desconocida"}"
+
+                    // Esperar 2 segundos y lanzar a QuestionActivity
+                    handler.postDelayed({
+                        finalCategory?.let { category ->
+                            val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
+                            game?.let {
+                                val intent = Intent(this@CategoryActivity, QuestionActivity::class.java)
+                                intent.putExtra("SELECTED_GAME", it)
+                                intent.putExtra("SELECTED_CATEGORY", category)
+                                startActivity(intent)
+                            }
+                        }
+                    }, 2000)
                 }
             }
         }
 
         handler.post(roulette)
-
-        findViewById<ImageView>(R.id.imgQuestion).setOnClickListener {
-            finalCategory?.let {
-                val intent = Intent(this, QuestionActivity::class.java)
-                intent.putExtra("selectedCategoryId", it.id)
-                intent.putExtra("selectedCategoryName", it.name)
-                startActivity(intent)
-            }
-        }
     }
 }

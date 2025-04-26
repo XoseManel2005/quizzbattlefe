@@ -8,7 +8,7 @@ data class Question(
     val correctAnswer: String,
     val imageUrl: String?,
     val questionText: String,
-    val wrong_option1: String,
+    val wrongOption1: String,
     val wrongOption2: String,
     val wrongOption3: String
 )
