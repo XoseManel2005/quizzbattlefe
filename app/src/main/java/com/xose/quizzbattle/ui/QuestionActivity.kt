@@ -1,13 +1,17 @@
 package com.xose.quizzbattle.ui
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
@@ -27,17 +31,18 @@ class QuestionActivity : AppCompatActivity() {
     private lateinit var btnAnswer2: Button
     private lateinit var btnAnswer3: Button
     private lateinit var btnAnswer4: Button
+    private lateinit var withdraw: Button
+
+    private var correctAnswer: String? = null
+    private var mediaPlayer: MediaPlayer? = null
+    private val handler = Handler(Looper.getMainLooper())
+
+    private var game: Game? = null
+    private var category: Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
-
-        val withdraw = findViewById<Button>(R.id.btnWithdraw)
-
-        withdraw.setOnClickListener {
-            val intent = Intent(this, GamesActivity::class.java)
-            startActivity(intent)
-        }
 
         tvQuestion = findViewById(R.id.tvQuestion)
         imgQuestion = findViewById(R.id.imgQuestion)
@@ -45,12 +50,17 @@ class QuestionActivity : AppCompatActivity() {
         btnAnswer2 = findViewById(R.id.btnAnswer2)
         btnAnswer3 = findViewById(R.id.btnAnswer3)
         btnAnswer4 = findViewById(R.id.btnAnswer4)
+        withdraw = findViewById(R.id.btnWithdraw)
 
-        val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
-        val category = intent.getSerializableExtra("SELECTED_CATEGORY") as? Category
+        game = intent.getSerializableExtra("SELECTED_GAME") as? Game
+        category = intent.getSerializableExtra("SELECTED_CATEGORY") as? Category
+
+        withdraw.setOnClickListener {
+            val intent = Intent(this, GamesActivity::class.java)
+            startActivity(intent)
+        }
 
         game?.let { updateStarsAndPoints(it) }
-
         category?.let { loadRandomQuestion(it.name) }
     }
 
@@ -67,8 +77,8 @@ class QuestionActivity : AppCompatActivity() {
 
         val starsPlayer2 = listOf(
             findViewById<ImageView>(R.id.imgStar1Player2),
-            findViewById<ImageView>(R.id.imgStar2Player2),
-            findViewById<ImageView>(R.id.imgStar3Player2)
+            findViewById(R.id.imgStar2Player2),
+            findViewById(R.id.imgStar3Player2)
         )
 
         for (i in 0 until gameData.starsPlayer2.coerceAtMost(3)) {
@@ -81,11 +91,9 @@ class QuestionActivity : AppCompatActivity() {
 
     private fun loadRandomQuestion(categoryName: String) {
         val sessionManager = SessionManager(this)
-        val token = sessionManager.getAuthToken()
         val api = ApiClient.getClientService(this)
 
         Log.d("CATEGORY_ID_DEBUG", "Buscando preguntas de categoría ID: $categoryName")
-        Log.d("CATEGORY_ID_DEBUG", "Categoria enviada: '${categoryName}'")
 
         api.getRandomQuestionsByCategory(categoryName)
             .enqueue(object : Callback<Question> {
@@ -98,6 +106,7 @@ class QuestionActivity : AppCompatActivity() {
                             Log.d("QUESTION_RECEIVED", "Pregunta: $question")
 
                             tvQuestion.text = question.statement
+                            correctAnswer = question.correctOption
 
                             if (!question.imageUrl.isNullOrEmpty()) {
                                 Glide.with(this@QuestionActivity)
@@ -107,17 +116,26 @@ class QuestionActivity : AppCompatActivity() {
                                 imgQuestion.setImageResource(R.drawable.ic_launcher_background)
                             }
 
-                            val answers = listOf(
+                            val answers = listOfNotNull(
+                                question.correctOption,
                                 question.wrongOption1,
                                 question.wrongOption2,
-                                question.wrongOption3,
-                                question.correctOption
+                                question.wrongOption3
                             ).shuffled()
 
-                            btnAnswer1.text = answers[0]
-                            btnAnswer2.text = answers[1]
-                            btnAnswer3.text = answers[2]
-                            btnAnswer4.text = answers[3]
+                            val buttons = listOf(btnAnswer1, btnAnswer2, btnAnswer3, btnAnswer4)
+
+                            for (i in buttons.indices) {
+                                if (i < answers.size) {
+                                    buttons[i].text = answers[i]
+                                    buttons[i].isEnabled = true
+                                    buttons[i].isVisible = true
+                                    buttons[i].setOnClickListener { checkAnswer(buttons[i]) }
+                                } else {
+                                    buttons[i].isEnabled = false
+                                    buttons[i].isVisible = false
+                                }
+                            }
                         }
                     } else {
                         Log.e("QUESTION_DEBUG", "Error al cargar pregunta: ${response.code()}")
@@ -131,5 +149,41 @@ class QuestionActivity : AppCompatActivity() {
                 }
             })
     }
-}
 
+    private fun checkAnswer(selectedButton: Button) {
+        val selectedAnswer = selectedButton.text.toString()
+        Log.d("ANSWER_SELECTED", "Respuesta seleccionada: $selectedAnswer")
+        Log.d("ANSWER_CORRECT", "Respuesta correcta: $correctAnswer")
+
+        val buttons = listOf(btnAnswer1, btnAnswer2, btnAnswer3, btnAnswer4)
+        buttons.forEach { it.setOnClickListener { null } }
+
+        if (selectedAnswer == correctAnswer) {
+            playSound(R.raw.correct_answer)
+
+            handler.postDelayed({
+                val intent = Intent(this, CategoryActivity::class.java)
+                intent.putExtra("SELECTED_GAME", game)
+                startActivity(intent)
+            }, 2000)
+        } else {
+            playSound(R.raw.wrong_answer)
+
+            handler.postDelayed({
+                val intent = Intent(this, GamesActivity::class.java)
+                startActivity(intent)
+            }, 2000)
+        }
+    }
+
+    private fun playSound(resId: Int) {
+        mediaPlayer?.release()
+        mediaPlayer = MediaPlayer.create(this, resId)
+        mediaPlayer?.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.release()
+    }
+}
