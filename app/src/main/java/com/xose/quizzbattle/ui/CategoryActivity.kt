@@ -69,7 +69,6 @@ class CategoryActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.tvCurrentPointsPlayer2).text = gameData.scorePlayer2.toString()
         }
 
-
         val imgCategory = findViewById<ImageView>(R.id.imgQuestion)
         val withdraw = findViewById<Button>(R.id.btnWithdraw)
 

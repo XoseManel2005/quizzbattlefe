@@ -1,6 +1,7 @@
 package com.xose.quizzbattle.data
 
 import com.xose.quizzbattle.model.Category
+import com.xose.quizzbattle.model.Game
 import com.xose.quizzbattle.model.LoginRequest
 import com.xose.quizzbattle.model.LoginResponse
 import com.xose.quizzbattle.model.Question
@@ -20,10 +21,8 @@ interface ApiService {
     fun register(@Body request: RegisterRequest): Call<User>
     @GET("category/find/all")
     fun getCategories(@Header("Authorization") token: String): Call<List<Category>>
-    @GET("question/find/random/by/category")
-    fun getRandomQuestionsByCategory(
-        @Header("Authorization") authToken: String,
-        @Query("categoryName") categoryName: String
-    ): Call<List<Question>>
+
+    @GET("questions/find/random/by/category")
+    fun getRandomQuestionsByCategory(@Query("categoryName") categoryName: String): Call<Question>
 
 }

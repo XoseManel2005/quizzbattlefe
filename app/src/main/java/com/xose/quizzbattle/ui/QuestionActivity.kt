@@ -87,31 +87,31 @@ class QuestionActivity : AppCompatActivity() {
         Log.d("CATEGORY_ID_DEBUG", "Buscando preguntas de categoría ID: $categoryName")
         Log.d("CATEGORY_ID_DEBUG", "Categoria enviada: '${categoryName}'")
 
-        api.getRandomQuestionsByCategory("Bearer $token", categoryName)
-            .enqueue(object : Callback<List<Question>> {
-                override fun onResponse(call: Call<List<Question>>, response: Response<List<Question>>) {
+        api.getRandomQuestionsByCategory(categoryName)
+            .enqueue(object : Callback<Question> {
+                override fun onResponse(call: Call<Question>, response: Response<Question>) {
                     if (response.isSuccessful) {
-                        val questions = response.body()
-                        if (questions.isNullOrEmpty()) {
-                            Toast.makeText(this@QuestionActivity, "No hay preguntas para esta categoría", Toast.LENGTH_SHORT).show()
+                        val question = response.body()
+                        if (question == null) {
+                            Toast.makeText(this@QuestionActivity, "No hay pregunta disponible", Toast.LENGTH_SHORT).show()
                         } else {
-                            val randomQuestion = questions.random()
+                            Log.d("QUESTION_RECEIVED", "Pregunta: $question")
 
-                            tvQuestion.text = randomQuestion.questionText
+                            tvQuestion.text = question.statement
 
-                            if (!randomQuestion.imageUrl.isNullOrEmpty()) {
+                            if (!question.imageUrl.isNullOrEmpty()) {
                                 Glide.with(this@QuestionActivity)
-                                    .load(randomQuestion.imageUrl)
+                                    .load(question.imageUrl)
                                     .into(imgQuestion)
                             } else {
                                 imgQuestion.setImageResource(R.drawable.ic_launcher_background)
                             }
 
                             val answers = listOf(
-                                randomQuestion.wrongOption1,
-                                randomQuestion.wrongOption2,
-                                randomQuestion.wrongOption3,
-                                randomQuestion.correctAnswer
+                                question.wrongOption1,
+                                question.wrongOption2,
+                                question.wrongOption3,
+                                question.correctOption
                             ).shuffled()
 
                             btnAnswer1.text = answers[0]
@@ -125,10 +125,11 @@ class QuestionActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<List<Question>>, t: Throwable) {
+                override fun onFailure(call: Call<Question>, t: Throwable) {
                     Log.e("QUESTION_DEBUG", "Fallo de conexión: ${t.localizedMessage}")
                     Toast.makeText(this@QuestionActivity, "Fallo de conexión", Toast.LENGTH_SHORT).show()
                 }
             })
     }
 }
+
