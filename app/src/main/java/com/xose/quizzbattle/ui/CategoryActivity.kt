@@ -73,6 +73,14 @@ class CategoryActivity : AppCompatActivity() {
         val withdraw = findViewById<Button>(R.id.btnWithdraw)
 
         withdraw.setOnClickListener {
+            if (game?.player1?.username ?: null  == game?.turn?.username ?: null){
+                game?.turn = game?.player2
+            } else {
+                game?.turn = game?.player1
+            }
+            game?.let { it1 -> updateGame(it1) }
+
+
             val intent = Intent (this, GamesActivity::class.java)
             startActivity(intent)
         }
@@ -155,5 +163,32 @@ class CategoryActivity : AppCompatActivity() {
         }
 
         handler.post(roulette)
+    }
+    private fun updateGame(game: Game) {
+        val api = ApiClient.getGameService(this)
+
+        Log.d("CATEGORY_ID_DEBUG", "Haciendo update del game: $game")
+
+        api.updateGame(game).enqueue(object : Callback<Game> {
+            override fun onResponse(call: Call<Game>, response: Response<Game>) {
+                if (response.isSuccessful) {
+                    Log.d("CATEGORY_ID_DEBUG", "Update hecho correctamente: $game")
+                    // Puedes hacer algo más aquí, como actualizar UI o notificar al usuario.
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("QUESTION_DEBUG", "Error al actualizar el juego: ${response.code()} - ${errorBody}")
+                    Toast.makeText(
+                        this@CategoryActivity,
+                        "Error actualizando el juego",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Game>, t: Throwable) {
+                Log.e("QUESTION_DEBUG", "Fallo de conexión: ${t.localizedMessage}")
+                Toast.makeText(this@CategoryActivity, "Fallo de conexión", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
