@@ -165,7 +165,6 @@ class QuestionActivity : AppCompatActivity() {
                 val intent = Intent(this, CategoryActivity::class.java)
                 intent.putExtra("SELECTED_GAME", game)
                 startActivity(intent)
-                finish()
             }, 2000)
         } else {
             playSound(R.raw.wrong_answer)
@@ -173,7 +172,6 @@ class QuestionActivity : AppCompatActivity() {
             handler.postDelayed({
                 val intent = Intent(this, GamesActivity::class.java)
                 startActivity(intent)
-                finish()
             }, 2000)
         }
     }

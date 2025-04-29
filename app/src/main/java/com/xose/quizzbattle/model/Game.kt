@@ -7,7 +7,7 @@ data class Game(
     val player1: User,
     val player2: User,
     var status: Status,
-    var turn: User,
+    var turn: User? = null,
     var scorePlayer1: Int = 0,
     var scorePlayer2: Int = 0,
     var starsPlayer1: Int = 0,
