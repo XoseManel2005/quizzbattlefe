@@ -21,13 +21,13 @@ class GamesActivity : AppCompatActivity() {
         val btnOngoing = findViewById<Button>(R.id.btnOngoing)
         val btnFinished = findViewById<Button>(R.id.btnFinished)
         val imgFriendships = findViewById<ImageView>(R.id.imgFriendships)
-// Mostrar fragmento de partidas por defecto
+        val imgProfile = findViewById<ImageView>(R.id.imgProfile)
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, GamesFragment())
             .commit()
 
 
-// Colores
         val colorSelected = Color.parseColor("#56000000") // más oscuro
         val colorUnselected = Color.parseColor("#00000000") // transparente
 
@@ -58,12 +58,16 @@ class GamesActivity : AppCompatActivity() {
                 .commit()
         }
 
-
         imgFriendships.setOnClickListener{
             val sessionManager = SessionManager(this)
             sessionManager.clearSession()
 
             val intent = Intent (this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        imgProfile.setOnClickListener {
+            val intent = Intent (this, ProfileActivity::class.java)
             startActivity(intent)
         }
     }
