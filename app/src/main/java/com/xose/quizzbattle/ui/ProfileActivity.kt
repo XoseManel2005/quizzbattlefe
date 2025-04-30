@@ -38,18 +38,6 @@ class ProfileActivity : AppCompatActivity() {
 
         val tvFriends = findViewById<TextView>(R.id.tvFriends)
 
-        // Llama a la API en una corrutina
-        lifecycleScope.launch {
-            try {
-                val friendships = ApiClient.getGameService(this@ProfileActivity)
-                    .getAcceptedFriendships(usuarioLogueado.username)
-                tvFriends.text = friendships.size.toString()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                tvFriends.text = "0"
-            }
-        }
-
         val tvWonGames = findViewById<TextView>(R.id.tvWonGames)
 
         lifecycleScope.launch {
@@ -62,7 +50,9 @@ class ProfileActivity : AppCompatActivity() {
 
                 // Partidas ganadas
                 val finishedGames = gameService.getGames(usuarioLogueado.username, "FINISHED")
-                val wonGames = finishedGames.count { it.winner.id == usuarioLogueado.id }
+                val wonGames = finishedGames.count { game ->
+                    game.winner != null && game.winner.id == usuarioLogueado.id
+                }
                 tvWonGames.text = wonGames.toString()
 
             } catch (e: Exception) {
