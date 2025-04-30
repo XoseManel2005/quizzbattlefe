@@ -1,6 +1,7 @@
 package com.xose.quizzbattle.data
 
 import com.xose.quizzbattle.model.Category
+import com.xose.quizzbattle.model.Friendship
 import com.xose.quizzbattle.model.Game
 import com.xose.quizzbattle.model.LoginRequest
 import com.xose.quizzbattle.model.LoginResponse
@@ -25,6 +26,5 @@ interface ApiService {
 
     @GET("questions/find/random/by/category")
     fun getRandomQuestionsByCategory(@Query("categoryName") categoryName: String): Call<Question>
-
 
 }

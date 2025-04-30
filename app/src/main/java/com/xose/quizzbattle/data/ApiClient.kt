@@ -75,4 +75,5 @@ object ApiClient {
     fun getGameService(context: Context): GameService {
         return create(getAuthOkHttpClient(context)).create(GameService::class.java)
     }
+
 }
