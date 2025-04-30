@@ -1,6 +1,5 @@
 package com.xose.quizzbattle.data
 
-import com.xose.quizzbattle.model.Friendship
 import com.xose.quizzbattle.model.Game
 import retrofit2.Call
 import retrofit2.http.Body
@@ -19,4 +18,7 @@ interface GameService {
     @GET("friendship/find/all/accepted")
     suspend fun getAcceptedFriendships(@Query("username") username: String): List<Friendship>
 
+
+    @POST("games/create")
+    fun createRandomGame(@Query("player1") username: String): Call<Game>
 }
