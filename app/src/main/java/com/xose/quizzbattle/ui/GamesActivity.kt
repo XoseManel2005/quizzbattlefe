@@ -104,6 +104,7 @@ class GamesActivity : AppCompatActivity() {
                                     intent.putExtra("SELECTED_GAME", game) // Game debe implementar Serializable o Parcelable
                                     startActivity(intent)
                                     Log.d("LOAD_GAMES", "$game")
+                                    finish()
                                 } else {
                                     Log.e("LOAD_GAMES", "Respuesta sin cuerpo")
                                 }

@@ -24,7 +24,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        usuarioLogueado = (SessionManager(this).getLoggedUser() ?: null) as User
+        usuarioLogueado = SessionManager(this).getLoggedUser() as User
 
         val tvLogout = findViewById<TextView>(R.id.tvLogout)
         val btnAddFriend = findViewById<Button>(R.id.btnAddFriend)
@@ -40,25 +40,42 @@ class ProfileActivity : AppCompatActivity() {
 
         val tvWonGames = findViewById<TextView>(R.id.tvWonGames)
 
+        val tvTotalGames = findViewById<TextView>(R.id.tvTotalGames)
+
         lifecycleScope.launch {
             try {
                 val gameService = ApiClient.getGameService(this@ProfileActivity)
 
-                // Amistades
+                //recoger todas las amistades
                 val friendships = gameService.getAcceptedFriendships(usuarioLogueado.username)
                 tvFriends.text = friendships.size.toString()
 
-                // Partidas ganadas
+                //obtener partidas terminadas
                 val finishedGames = gameService.getGames(usuarioLogueado.username, "FINISHED")
+
+                //ver partidas ganadas
                 val wonGames = finishedGames.count { game ->
                     game.winner != null && game.winner.id == usuarioLogueado.id
                 }
                 tvWonGames.text = wonGames.toString()
 
+                //obtener partidas en curso
+                val ongoingGames = gameService.getGames(usuarioLogueado.username, "ONGOING")
+
+                //sumar partidas en curso y acabadas
+                val allGames = finishedGames + ongoingGames
+
+                //las contamos y mostramos como total de partidas
+                val totalGames = allGames.count { game ->
+                    game.player1.id == usuarioLogueado.id || game.player2.id == usuarioLogueado.id
+                }
+                tvTotalGames.text = totalGames.toString()
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 tvFriends.text = "0"
                 tvWonGames.text = "0"
+                tvTotalGames.text = "0"
             }
         }
 
@@ -66,9 +83,8 @@ class ProfileActivity : AppCompatActivity() {
         val spannable = SpannableString(text)
         spannable.setSpan(UnderlineSpan(), 0, text.length, 0)
 
-        val tvCerrarSesion = findViewById<TextView>(R.id.tvLogout)
-        tvCerrarSesion.setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_light)) // Usa tu color rojo personalizado si tienes
-        tvCerrarSesion.text = spannable
+        tvLogout.setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_light)) // Usa tu color rojo personalizado si tienes
+        tvLogout.text = spannable
 
         tvLogout.setOnClickListener {
             val sessionManager = SessionManager(this)

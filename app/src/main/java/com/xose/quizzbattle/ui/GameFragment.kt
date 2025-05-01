@@ -62,6 +62,7 @@ class GamesFragment : Fragment() {
                     intent.putExtra("SELECTED_GAME", selectedGame) // ahora sí funcionará
                     startActivity(intent)
                     Log.d("LOAD_GAMES", "$selectedGame")
+                    requireActivity().finish()
                 }
                 recyclerView.adapter = adapter
             } catch (e: Exception) {

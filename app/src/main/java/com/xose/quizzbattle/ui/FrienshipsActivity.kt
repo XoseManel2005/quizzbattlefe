@@ -62,11 +62,13 @@ class FrienshipsActivity : AppCompatActivity() {
 
             val intent = Intent (this, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         imgProfile.setOnClickListener {
             val intent = Intent (this, ProfileActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

@@ -34,6 +34,9 @@ class QuestionActivity : AppCompatActivity() {
     private lateinit var btnAnswer3: Button
     private lateinit var btnAnswer4: Button
     private lateinit var withdraw: Button
+    private var timeRemaining = 25
+    private lateinit var tvSecondsRemaining: TextView
+    private var countdownRunnable: Runnable? = null
 
     private var correctAnswer: String? = null
     private var mediaPlayer: MediaPlayer? = null
@@ -54,6 +57,10 @@ class QuestionActivity : AppCompatActivity() {
         btnAnswer3 = findViewById(R.id.btnAnswer3)
         btnAnswer4 = findViewById(R.id.btnAnswer4)
         withdraw = findViewById(R.id.btnWithdraw)
+        tvSecondsRemaining = findViewById(R.id.tvSecondsRemaining)
+
+        startCountdown()
+
 
         game = intent.getSerializableExtra("SELECTED_GAME") as? Game
         category = intent.getSerializableExtra("SELECTED_CATEGORY") as? Category
@@ -169,6 +176,9 @@ class QuestionActivity : AppCompatActivity() {
     }
 
     private fun checkAnswer(selectedButton: Button) {
+        //elimina el contador cuando se responde
+        countdownRunnable?.let { handler.removeCallbacks(it) }
+
         val selectedAnswer = selectedButton.text.toString()
         Log.d("ANSWER_SELECTED", "Respuesta seleccionada: $selectedAnswer")
         Log.d("ANSWER_CORRECT", "Respuesta correcta: $correctAnswer")
@@ -280,6 +290,45 @@ class QuestionActivity : AppCompatActivity() {
         })
     }
 
+    private fun startCountdown() {
+        tvSecondsRemaining.text = timeRemaining.toString()
+
+        countdownRunnable = object : Runnable {
+            override fun run() {
+                timeRemaining--
+                tvSecondsRemaining.text = timeRemaining.toString()
+
+                if (timeRemaining > 0) {
+                    handler.postDelayed(this, 1000)
+                } else {
+                    handleTimeout()
+                }
+            }
+        }
+
+        handler.postDelayed(countdownRunnable!!, 1000)
+    }
+
+    private fun handleTimeout() {
+        //desactiva botones de respuesta
+        val buttons = listOf(btnAnswer1, btnAnswer2, btnAnswer3, btnAnswer4)
+        buttons.forEach {
+            it.setOnClickListener(null)
+        }
+
+        if (game?.player1?.username == game?.turn?.username) {
+            game?.turn = game?.player2
+        } else {
+            game?.turn = game?.player1
+        }
+
+        game?.let { updateGame(it) }
+
+        val intent = Intent(this, GamesActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     private fun playSound(resId: Int) {
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer.create(this, resId)
@@ -289,5 +338,7 @@ class QuestionActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer?.release()
+        countdownRunnable?.let { handler.removeCallbacks(it) }
     }
+
 }

@@ -83,6 +83,7 @@ class CategoryActivity : AppCompatActivity() {
 
             val intent = Intent (this, GamesActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         loadCategories(imgCategory)
@@ -155,6 +156,7 @@ class CategoryActivity : AppCompatActivity() {
                                 intent.putExtra("SELECTED_GAME", it)
                                 intent.putExtra("SELECTED_CATEGORY", category)
                                 startActivity(intent)
+                                finish()
                             }
                         }
                     }, 2000)
