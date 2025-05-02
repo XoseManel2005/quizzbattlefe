@@ -17,7 +17,7 @@ class GameAdapter(
 
     inner class PartidaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgAvatar: ImageView = view.findViewById(R.id.imgAvatar)
-        val txtNombre: TextView = view.findViewById(R.id.txtJugador1)
+        val txtNombre: TextView = view.findViewById(R.id.txtJugador)
         val txtResultado: TextView = view.findViewById(R.id.txtResultado)
         val btnJugar: Button = view.findViewById(R.id.btnJugar)
     }

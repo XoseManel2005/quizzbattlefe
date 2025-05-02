@@ -1,8 +1,6 @@
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -18,7 +16,7 @@ class FinishedGameAdapter(
 
     inner class PartidaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgAvatar: ImageView = view.findViewById(R.id.imgAvatar)
-        val txtNombre: TextView = view.findViewById(R.id.txtJugador1)
+        val txtNombre: TextView = view.findViewById(R.id.txtJugador)
         val imgAvatar2: ImageView = view.findViewById(R.id.imgAvatar2)
         val txtNombre2: TextView = view.findViewById(R.id.txtJugador2)
         val txtResultado: TextView = view.findViewById(R.id.txtResultado)

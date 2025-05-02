@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.data.GameService
@@ -37,7 +36,7 @@ class GamesActivity : AppCompatActivity() {
 
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, GamesFragment())
+            .replace(R.id.friendsContainer, GamesFragment())
             .commit()
 
 
@@ -56,7 +55,7 @@ class GamesActivity : AppCompatActivity() {
             btnOngoing.backgroundTintList = ColorStateList.valueOf(colorUnselected)
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, GamesFragment())
+                .replace(R.id.friendsContainer, GamesFragment())
                 .commit()
         }
 
@@ -67,15 +66,12 @@ class GamesActivity : AppCompatActivity() {
             btnFinished.backgroundTintList = ColorStateList.valueOf(colorUnselected)
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, FinishedGameFragment())
+                .replace(R.id.friendsContainer, FinishedGameFragment())
                 .commit()
         }
 
         imgFriendships.setOnClickListener{
-            val sessionManager = SessionManager(this)
-            sessionManager.clearSession()
-
-            val intent = Intent (this, LoginActivity::class.java)
+            val intent = Intent (this, FrienshipsActivity::class.java)
             startActivity(intent)
             finish()
         }

@@ -30,7 +30,7 @@ class FinishedGameFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_games_finished, container, false)
 
-        recyclerViewFinished = view.findViewById(R.id.rvRivalGames)
+        recyclerViewFinished = view.findViewById(R.id.rvFriends)
         recyclerViewFinished.layoutManager = LinearLayoutManager(requireContext())
 
         usuarioLogueado = SessionManager(requireContext()).getLoggedUser() ?: return view

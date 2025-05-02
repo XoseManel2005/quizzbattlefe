@@ -199,10 +199,6 @@ class QuestionActivity : AppCompatActivity() {
 
                     if (game?.starsPlayer1 == 3) {
                         game?.turn = game?.player2
-                        if ((game?.starsPlayer2 ?: 0) < 3) {
-                            game?.winner = game?.player1!!
-                            game?.status = Game.Status.FINISHED
-                        }
                         updateGame(game!!)
                         navigateTo(GamesActivity::class.java)
                         return@postDelayed

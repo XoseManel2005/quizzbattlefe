@@ -19,7 +19,7 @@
 
     <!-- Contenedor de fragments -->
     <FrameLayout
-        android:id="@+id/fragmentContainer"
+        android:id="@+id/friendsContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="4dp"
@@ -79,7 +79,7 @@
         app:cornerRadius="0dp"
         app:layout_constraintEnd_toStartOf="@+id/btnSolicitudes"
         app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="@+id/fragmentContainer"
+        app:layout_constraintStart_toStartOf="@+id/friendsContainer"
         app:layout_constraintTop_toBottomOf="@+id/tvQuizzBattle3" />
 
 
@@ -90,7 +90,7 @@
         android:text="ACABADAS"
         android:textColor="#000000"
         app:cornerRadius="0dp"
-        app:layout_constraintEnd_toEndOf="@+id/fragmentContainer"
+        app:layout_constraintEnd_toEndOf="@+id/friendsContainer"
         app:layout_constraintStart_toEndOf="@+id/btnAmistades"
         app:layout_constraintTop_toTopOf="@+id/btnAmistades" />
 

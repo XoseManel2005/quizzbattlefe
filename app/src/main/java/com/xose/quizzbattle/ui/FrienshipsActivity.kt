@@ -17,12 +17,13 @@ class FrienshipsActivity : AppCompatActivity() {
 
 
         val btnAmistades = findViewById<Button>(R.id.btnAmistades)
+        val imgGames = findViewById<ImageView>(R.id.imgGames)
         val btnSolicitudes = findViewById<Button>(R.id.btnSolicitudes)
         val imgFriendships = findViewById<ImageView>(R.id.imgFriendships)
         val imgProfile = findViewById<ImageView>(R.id.imgProfile)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, GamesFragment())
+            .replace(R.id.friendsContainer, FriendsFragment())
             .commit()
 
 
@@ -41,7 +42,7 @@ class FrienshipsActivity : AppCompatActivity() {
             btnAmistades.backgroundTintList = ColorStateList.valueOf(colorUnselected)
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, GamesFragment())
+                .replace(R.id.friendsContainer, FriendsFragment())
                 .commit()
         }
 
@@ -52,7 +53,7 @@ class FrienshipsActivity : AppCompatActivity() {
             btnSolicitudes.backgroundTintList = ColorStateList.valueOf(colorUnselected)
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, FinishedGameFragment())
+                .replace(R.id.friendsContainer, FinishedGameFragment())
                 .commit()
         }
 
@@ -67,6 +68,12 @@ class FrienshipsActivity : AppCompatActivity() {
 
         imgProfile.setOnClickListener {
             val intent = Intent (this, ProfileActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        imgGames.setOnClickListener {
+            val intent = Intent (this, GamesActivity::class.java)
             startActivity(intent)
             finish()
         }

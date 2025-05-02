@@ -1,6 +1,5 @@
 package com.xose.quizzbattle.ui
 
-import FinishedGameAdapter
 import GameAdapter
 import android.content.Intent
 import android.os.Bundle
@@ -35,7 +34,7 @@ class GamesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_games, container, false)
 
-        recyclerViewRival = view.findViewById(R.id.rvRivalGames)
+        recyclerViewRival = view.findViewById(R.id.rvFriends)
         recyclerViewRival.layoutManager = LinearLayoutManager(requireContext())
 
         recyclerView = view.findViewById(R.id.rvPartidas)

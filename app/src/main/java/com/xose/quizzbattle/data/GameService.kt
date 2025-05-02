@@ -21,5 +21,5 @@ interface GameService {
     suspend fun getAcceptedFriendships(@Query("username") username: String): List<Friendship>
 
     @POST("games/create")
-    fun createRandomGame(@Query("player1") username: String): Call<Game>
+    fun createRandomGame(@Query("player1") player1: String, @Query("player2") player2: String? = null): Call<Game>
 }
