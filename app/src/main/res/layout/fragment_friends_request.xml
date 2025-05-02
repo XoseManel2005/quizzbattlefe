@@ -9,6 +9,16 @@
         android:padding="16dp">
 
         <!-- Texto cuando no haya solicitudes -->
+        <TextView
+            android:id="@+id/tvNoRequests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="No tienes solicitudes pendientes"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:visibility="visible" />
 
         <!-- RecyclerView para mostrar solicitudes de amistad -->
         <androidx.recyclerview.widget.RecyclerView
@@ -17,16 +27,6 @@
             android:layout_height="wrap_content" />
 
         <!-- Texto cuando no haya amigos -->
-        <TextView
-            android:id="@+id/tvNoFriends"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="No tienes amigos aún"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:visibility="invisible" />
 
         <!-- RecyclerView para mostrar amigos -->
 

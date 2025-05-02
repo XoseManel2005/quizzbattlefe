@@ -31,6 +31,9 @@ class FriendsRequestAdapter(
     override fun getItemCount(): Int = friends.size
 
     override fun onBindViewHolder(holder: FriendsViewHolder, position: Int) {
+        if (friends.isNullOrEmpty()){
+
+        }
         val friend = friends[position]
         if (usuarioLogueado.username == friend.sender.username){
             holder.txtNombre.text = friend.receiver.username

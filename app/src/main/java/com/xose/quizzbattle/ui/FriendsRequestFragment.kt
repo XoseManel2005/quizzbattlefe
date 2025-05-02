@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -31,56 +32,70 @@ class FriendsRequestFragment : Fragment() {
     private lateinit var adapterFriends: FriendsRequestAdapter
     private lateinit var gameService: GameService
     private lateinit var usuarioLogueado: User
+    private lateinit var tvNoFriendRequests: TextView // Referencia al TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_friends, container, false)
+        val view = inflater.inflate(R.layout.fragment_friends_request, container, false)
 
         recyclerViewFriends = view.findViewById(R.id.rvFriends)
         recyclerViewFriends.layoutManager = LinearLayoutManager(requireContext())
+
+        // Referencia al TextView que muestra el mensaje de "No solicitudes"
+        tvNoFriendRequests = view.findViewById(R.id.tvNoRequests)
 
         usuarioLogueado = SessionManager(requireContext()).getLoggedUser() ?: return view
         gameService = ApiClient.getGameService(requireContext())
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val pendingRequests = gameService.getPendingFriendRequests(usuarioLogueado.username, Friendship.Status.PENDING.toString()) // este endpoint debe existir
-                adapterFriends = FriendsRequestAdapter(
-                    pendingRequests,
-                    usuarioLogueado,
-                    onAcceptClick = { friendship ->
-                        lifecycleScope.launch {
-                            try {
-                                gameService.acceptFriendship(friendship.id)
-                                Toast.makeText(requireContext(), "Solicitud aceptada", Toast.LENGTH_SHORT).show()
-                                refreshFriendRequests()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                Toast.makeText(requireContext(), "Error al aceptar", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    },
-                    onDenyClick = { friendship ->
-                        lifecycleScope.launch {
-                            try {
-                                val response = gameService.denyFriendship(friendship.id)
-                                if (response.isSuccessful) {
-                                    Toast.makeText(requireContext(), "Solicitud rechazada", Toast.LENGTH_SHORT).show()
-                                    refreshFriendRequests()
-                                } else {
-                                    Toast.makeText(requireContext(), "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
-                                }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                Toast.makeText(requireContext(), "Error al rechazar", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
+                val pendingRequests = gameService.getPendingFriendRequests(usuarioLogueado.username, Friendship.Status.PENDING.toString()) // Este endpoint debe existir
 
-                )
-                recyclerViewFriends.adapter = adapterFriends
+                if (pendingRequests.isEmpty()) {
+                    // Si no hay solicitudes, muestra el mensaje y oculta el RecyclerView
+                    tvNoFriendRequests.visibility = View.VISIBLE
+                    recyclerViewFriends.visibility = View.GONE
+                } else {
+                    // Si hay solicitudes, muestra el RecyclerView
+                    tvNoFriendRequests.visibility = View.GONE
+                    recyclerViewFriends.visibility = View.VISIBLE
+
+                    adapterFriends = FriendsRequestAdapter(
+                        pendingRequests,
+                        usuarioLogueado,
+                        onAcceptClick = { friendship ->
+                            lifecycleScope.launch {
+                                try {
+                                    gameService.acceptFriendship(friendship.id)
+                                    Toast.makeText(requireContext(), "Solicitud aceptada", Toast.LENGTH_SHORT).show()
+                                    refreshFriendRequests()
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                    Toast.makeText(requireContext(), "Error al aceptar", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        },
+                        onDenyClick = { friendship ->
+                            lifecycleScope.launch {
+                                try {
+                                    val response = gameService.denyFriendship(friendship.id)
+                                    if (response.isSuccessful) {
+                                        Toast.makeText(requireContext(), "Solicitud rechazada", Toast.LENGTH_SHORT).show()
+                                        refreshFriendRequests()
+                                    } else {
+                                        Toast.makeText(requireContext(), "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                    Toast.makeText(requireContext(), "Error al rechazar", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    )
+                    recyclerViewFriends.adapter = adapterFriends
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(requireContext(), "Error al cargar solicitudes", Toast.LENGTH_LONG).show()
@@ -94,13 +109,24 @@ class FriendsRequestFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val updatedRequests = gameService.getPendingFriendRequests(usuarioLogueado.username, Friendship.Status.PENDING.toString())
-                adapterFriends = FriendsRequestAdapter(
-                    updatedRequests,
-                    usuarioLogueado,
-                    onAcceptClick = { friendship -> /* mismo que arriba */ },
-                    onDenyClick = { friendship -> /* mismo que arriba */ }
-                )
-                recyclerViewFriends.adapter = adapterFriends
+
+                if (updatedRequests.isEmpty()) {
+                    // Si no hay solicitudes después de actualizar, muestra el mensaje
+                    tvNoFriendRequests.visibility = View.VISIBLE
+                    recyclerViewFriends.visibility = View.GONE
+                } else {
+                    // Si hay solicitudes después de actualizar, muestra el RecyclerView
+                    tvNoFriendRequests.visibility = View.GONE
+                    recyclerViewFriends.visibility = View.VISIBLE
+
+                    adapterFriends = FriendsRequestAdapter(
+                        updatedRequests,
+                        usuarioLogueado,
+                        onAcceptClick = { friendship -> /* Lógica para aceptar */ },
+                        onDenyClick = { friendship -> /* Lógica para rechazar */ }
+                    )
+                    recyclerViewFriends.adapter = adapterFriends
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
