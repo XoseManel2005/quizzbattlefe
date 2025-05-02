@@ -3,11 +3,14 @@ package com.xose.quizzbattle.data
 import com.xose.quizzbattle.model.Friendship
 import com.xose.quizzbattle.model.Game
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GameService {
@@ -17,9 +20,22 @@ interface GameService {
     @PUT("games/update")
     fun updateGame(@Body request: Game): Call<Game>
 
+    @POST("games/create")
+    fun createRandomGame(@Query("player1") player1: String, @Query("player2") player2: String? = null): Call<Game>
+
     @GET("friendship/find/all/accepted")
     suspend fun getAcceptedFriendships(@Query("username") username: String): List<Friendship>
 
-    @POST("games/create")
-    fun createRandomGame(@Query("player1") player1: String, @Query("player2") player2: String? = null): Call<Game>
+    @GET("friendship/find/by/player/status")
+    suspend fun getPendingFriendRequests(@Query("username") username: String, @Query("status") status : String): List<Friendship>
+
+    @DELETE("friendship/delete/by/id/{id}")
+    suspend fun denyFriendship(@Path("id") id: Long): Response<Void>
+
+    @PUT("friendship/update/{id}")
+    suspend fun acceptFriendship(@Path("id") id: Long): Friendship
+
+
+
+
 }

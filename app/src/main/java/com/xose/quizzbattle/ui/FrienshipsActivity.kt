@@ -53,7 +53,7 @@ class FrienshipsActivity : AppCompatActivity() {
             btnSolicitudes.backgroundTintList = ColorStateList.valueOf(colorUnselected)
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.friendsContainer, FinishedGameFragment())
+                .replace(R.id.friendsContainer, FriendsRequestFragment())
                 .commit()
         }
 
