@@ -185,6 +185,7 @@ class QuestionActivity : AppCompatActivity() {
 
         val buttons = listOf(btnAnswer1, btnAnswer2, btnAnswer3, btnAnswer4)
         buttons.forEach { it.setOnClickListener(null) }
+        withdraw.setOnClickListener { null }
 
         if (selectedAnswer == correctAnswer) {
             playSound(R.raw.correct_answer)
@@ -218,10 +219,14 @@ class QuestionActivity : AppCompatActivity() {
 
                     if (game?.starsPlayer2 == 3) {
                         game?.turn = null
+                        game?.status = Game.Status.FINISHED
+
                         if ((game?.starsPlayer1 ?: 0) < 3) {
+                            // Solo jugador 2 tiene 3 estrellas: gana
                             game?.winner = game?.player2!!
-                            game?.status = Game.Status.FINISHED
                         }
+                        // Si ambos tienen 3 estrellas: empate (winner sigue siendo null por defecto)
+
                         updateGame(game!!)
                         navigateTo(GamesActivity::class.java)
                         return@postDelayed
