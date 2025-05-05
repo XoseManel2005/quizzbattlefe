@@ -57,14 +57,6 @@ class FrienshipsActivity : AppCompatActivity() {
                 .commit()
         }
 
-        imgFriendships.setOnClickListener{
-            val sessionManager = SessionManager(this)
-            sessionManager.clearSession()
-
-            val intent = Intent (this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
 
         imgProfile.setOnClickListener {
             val intent = Intent (this, ProfileActivity::class.java)
