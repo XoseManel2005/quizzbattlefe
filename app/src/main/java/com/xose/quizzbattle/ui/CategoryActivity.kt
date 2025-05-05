@@ -12,6 +12,7 @@ import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.model.Category
 import com.xose.quizzbattle.model.Game
+import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,6 +20,9 @@ import retrofit2.Response
 
 
 class CategoryActivity : AppCompatActivity() {
+    private lateinit var usuarioLogueado: User
+    private lateinit var handler: android.os.Handler
+    private var rouletteRunnable: Runnable? = null
 
     private val localCategoryImages = listOf(
         R.drawable.category_science,
@@ -40,6 +44,8 @@ class CategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
 
+        handler = android.os.Handler(mainLooper)
+        usuarioLogueado = (SessionManager(this).getLoggedUser() ?: null) as User
         val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
         game?.let { gameData ->
             // Actualizar estrellas del jugador 1
@@ -72,8 +78,9 @@ class CategoryActivity : AppCompatActivity() {
         val imgCategory = findViewById<ImageView>(R.id.imgQuestion)
         val withdraw = findViewById<Button>(R.id.btnWithdraw)
 
+
         withdraw.setOnClickListener {
-            if (game?.player1?.username ?: null  == game?.turn?.username ?: null){
+            if (game?.player1?.username ?: null  ==  usuarioLogueado.username){
                 game?.turn = game?.player2
             } else {
                 game?.turn = game?.player1
@@ -120,11 +127,10 @@ class CategoryActivity : AppCompatActivity() {
     private fun startImageRoulette(imageView: ImageView, categories: List<Category>) {
         var index = 0
         var interval: Long = 70
-        val handler = android.os.Handler(mainLooper)
         val totalDuration = 4000L
         val startTime = System.currentTimeMillis()
 
-        val roulette = object : Runnable {
+        rouletteRunnable = object : Runnable {
             override fun run() {
                 imageView.setImageResource(localCategoryImages[index % localCategoryImages.size])
                 index++
@@ -134,21 +140,17 @@ class CategoryActivity : AppCompatActivity() {
                     interval += 30
                     handler.postDelayed(this, interval)
                 } else {
-                    // Elegir aleatoriamente una imagen local final
                     val finalDrawableId = localCategoryImages.random()
                     imageView.setImageResource(finalDrawableId)
 
-                    // Buscar el nombre asociado a esa imagen
                     val localName = localToNameMap[finalDrawableId]?.trim()
-
-                    // Buscar la categoría correspondiente en la lista de la API
                     finalCategory = categories.find { it.name.trim().equals(localName, ignoreCase = true) }
 
                     findViewById<TextView>(R.id.tvCategory).text =
                         "Categoría: ${finalCategory?.name ?: "Desconocida"}"
 
-                    // Esperar 2 segundos y lanzar a QuestionActivity
-                    handler.postDelayed({
+                    // ⚠️ Usar el mismo handler para el siguiente retraso
+                    rouletteRunnable = Runnable {
                         finalCategory?.let { category ->
                             val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
                             game?.let {
@@ -159,13 +161,15 @@ class CategoryActivity : AppCompatActivity() {
                                 finish()
                             }
                         }
-                    }, 2000)
+                    }
+                    handler.postDelayed(rouletteRunnable!!, 2000)
                 }
             }
         }
 
-        handler.post(roulette)
+        handler.post(rouletteRunnable!!)
     }
+
     private fun updateGame(game: Game) {
         val api = ApiClient.getGameService(this)
 
@@ -193,4 +197,10 @@ class CategoryActivity : AppCompatActivity() {
             }
         })
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        rouletteRunnable?.let { handler.removeCallbacks(it) }
+    }
+
 }
