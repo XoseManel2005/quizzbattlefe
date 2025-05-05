@@ -23,6 +23,8 @@ class FinishedGameFragment : Fragment() {
     private lateinit var adapterFinished: FinishedGameAdapter
     private lateinit var gameService: GameService
     private lateinit var usuarioLogueado: User
+    private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,10 +35,22 @@ class FinishedGameFragment : Fragment() {
         recyclerViewFinished = view.findViewById(R.id.rvFriends)
         recyclerViewFinished.layoutManager = LinearLayoutManager(requireContext())
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutFinished)
+        swipeRefreshLayout.setOnRefreshListener {
+            loadFinishedGames()
+        }
+
         usuarioLogueado = SessionManager(requireContext()).getLoggedUser() ?: return view
         gameService = ApiClient.getGameService(requireContext())
 
+        loadFinishedGames()
+
+        return view
+    }
+
+    private fun loadFinishedGames() {
         viewLifecycleOwner.lifecycleScope.launch {
+            swipeRefreshLayout.isRefreshing = true
             try {
                 val games = gameService.getGames(usuarioLogueado.username, Game.Status.FINISHED.toString())
                 adapterFinished = FinishedGameAdapter(games, usuarioLogueado)
@@ -44,9 +58,10 @@ class FinishedGameFragment : Fragment() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(requireContext(), "Error al cargar partidas", Toast.LENGTH_LONG).show()
+            } finally {
+                swipeRefreshLayout.isRefreshing = false
             }
         }
-
-        return view
     }
+
 }

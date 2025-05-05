@@ -23,7 +23,7 @@ class FrienshipsActivity : AppCompatActivity() {
         val imgProfile = findViewById<ImageView>(R.id.imgProfile)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.friendsContainer, FriendsFragment())
+            .replace(R.id.gamesContainer, FriendsFragment())
             .commit()
 
 
@@ -42,7 +42,7 @@ class FrienshipsActivity : AppCompatActivity() {
             btnAmistades.backgroundTintList = ColorStateList.valueOf(colorUnselected)
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.friendsContainer, FriendsFragment())
+                .replace(R.id.gamesContainer, FriendsFragment())
                 .commit()
         }
 
@@ -53,7 +53,7 @@ class FrienshipsActivity : AppCompatActivity() {
             btnSolicitudes.backgroundTintList = ColorStateList.valueOf(colorUnselected)
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.friendsContainer, FriendsRequestFragment())
+                .replace(R.id.gamesContainer, FriendsRequestFragment())
                 .commit()
         }
 

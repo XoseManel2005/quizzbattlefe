@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.data.GameService
@@ -27,6 +28,8 @@ class GamesFragment : Fragment() {
     private lateinit var adapter: GameAdapter
     private lateinit var gameService: GameService
     private lateinit var usuarioLogueado: User
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,43 +46,45 @@ class GamesFragment : Fragment() {
         usuarioLogueado = SessionManager(requireContext()).getLoggedUser() ?: return view
         gameService = ApiClient.getGameService(requireContext())
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            var userGames = mutableListOf<Game>()
-            var rivalGames = mutableListOf<Game>()
-            val games = gameService.getGames(usuarioLogueado.username, Game.Status.ONGOING.toString())
-            games.forEach { game ->
-                if (game.turn?.username == usuarioLogueado.username) {
-                    userGames.add(game)
-                } else {
-                    rivalGames.add(game)
-                }
-            }
-            try {
-
-                adapter = GameAdapter(userGames, usuarioLogueado) { selectedGame ->
-                    val intent = Intent(requireContext(), CategoryActivity::class.java)
-                    intent.putExtra("SELECTED_GAME", selectedGame) // ahora sí funcionará
-                    startActivity(intent)
-                    Log.d("LOAD_GAMES", "$selectedGame")
-                    requireActivity().finish()
-                }
-                recyclerView.adapter = adapter
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(requireContext(), "Error al cargar partidas", Toast.LENGTH_LONG).show()
-            }
-
-            try {
-                adapter = GameAdapter(rivalGames, usuarioLogueado) {
-                    Log.d("LOAD_GAMES", "$it")
-                }
-                recyclerViewRival.adapter = adapter
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(requireContext(), "Error al cargar partidas", Toast.LENGTH_LONG).show()
-            }
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+            loadGames()
         }
+
+        // Cargar datos solo una vez desde la función correcta
+        loadGames()
 
         return view
     }
+
+
+    private fun loadGames() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            swipeRefreshLayout.isRefreshing = true
+            try {
+                val games = gameService.getGames(usuarioLogueado.username, Game.Status.ONGOING.toString())
+                val userGames = games.filter { it.turn?.username == usuarioLogueado.username }
+                val rivalGames = games.filter { it.turn?.username != usuarioLogueado.username }
+
+                recyclerView.adapter = GameAdapter(userGames, usuarioLogueado) { selectedGame ->
+                    val intent = Intent(requireContext(), CategoryActivity::class.java)
+                    intent.putExtra("SELECTED_GAME", selectedGame)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+
+                recyclerViewRival.adapter = GameAdapter(rivalGames, usuarioLogueado) {
+                    // Acción opcional
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Error al cargar partidas", Toast.LENGTH_LONG).show()
+            } finally {
+                swipeRefreshLayout.isRefreshing = false
+            }
+        }
+    }
+
+
 }

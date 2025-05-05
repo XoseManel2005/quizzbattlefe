@@ -22,7 +22,7 @@
 
     <!-- Contenedor de fragments -->
     <FrameLayout
-        android:id="@+id/friendsContainer"
+        android:id="@+id/gamesContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="4dp"

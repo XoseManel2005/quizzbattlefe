@@ -31,6 +31,7 @@ class FriendsFragment : Fragment() {
     private lateinit var gameService: GameService
     private lateinit var usuarioLogueado: User
     private lateinit var tvNoFriends: TextView // Referencia al TextView
+    private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,22 +41,31 @@ class FriendsFragment : Fragment() {
 
         recyclerViewFriends = view.findViewById(R.id.rvFriends)
         recyclerViewFriends.layoutManager = LinearLayoutManager(requireContext())
-        tvNoFriends = view.findViewById(R.id.tvNoFriends) // Inicialización de tvNoFriends
+        tvNoFriends = view.findViewById(R.id.tvNoFriends)
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+            loadFriends()
+        }
 
         usuarioLogueado = SessionManager(requireContext()).getLoggedUser() ?: return view
         gameService = ApiClient.getGameService(requireContext())
 
+        loadFriends()
+
+        return view
+    }
+
+    private fun loadFriends() {
         viewLifecycleOwner.lifecycleScope.launch {
+            swipeRefreshLayout.isRefreshing = true
             try {
-                // Obtener los amigos
                 val friends = gameService.getAcceptedFriendships(usuarioLogueado.username)
 
                 if (friends.isEmpty()) {
-                    // Si no hay amigos, mostrar el mensaje
                     tvNoFriends.visibility = View.VISIBLE
                     recyclerViewFriends.visibility = View.GONE
                 } else {
-                    // Si hay amigos, mostrar el RecyclerView
                     tvNoFriends.visibility = View.GONE
                     recyclerViewFriends.visibility = View.VISIBLE
 
@@ -64,19 +74,16 @@ class FriendsFragment : Fragment() {
                             .setTitle("Confirmación")
                             .setMessage("¿Estás seguro de que quieres crear una nueva partida?")
                             .setPositiveButton("Sí") { _, _ ->
-                                gameService = ApiClient.getGameService(requireContext())
                                 val call = gameService.createRandomGame(usuarioLogueado.username, selectedFriend.username)
-
                                 call.enqueue(object : Callback<Game> {
                                     override fun onResponse(call: Call<Game>, response: Response<Game>) {
                                         if (response.isSuccessful) {
                                             val game = response.body()
                                             if (game != null) {
                                                 val intent = Intent(requireContext(), CategoryActivity::class.java)
-                                                intent.putExtra("SELECTED_GAME", game) // Game debe implementar Serializable o Parcelable
+                                                intent.putExtra("SELECTED_GAME", game)
                                                 startActivity(intent)
                                                 requireActivity().finish()
-                                                Log.d("LOAD_GAMES", "$game")
                                             } else {
                                                 Log.e("LOAD_GAMES", "Respuesta sin cuerpo")
                                             }
@@ -98,8 +105,10 @@ class FriendsFragment : Fragment() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(requireContext(), "Error al cargar amistades", Toast.LENGTH_LONG).show()
+            } finally {
+                swipeRefreshLayout.isRefreshing = false
             }
         }
-        return view
     }
+
 }

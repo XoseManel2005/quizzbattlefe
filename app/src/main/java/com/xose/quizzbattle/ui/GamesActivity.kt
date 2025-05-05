@@ -22,6 +22,7 @@ import retrofit2.Response
 class GamesActivity : AppCompatActivity() {
     private lateinit var gameService: GameService
     private lateinit var usuarioLogueado: User
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
@@ -36,7 +37,7 @@ class GamesActivity : AppCompatActivity() {
 
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.friendsContainer, GamesFragment())
+            .replace(R.id.gamesContainer, GamesFragment())
             .commit()
 
 
@@ -55,7 +56,7 @@ class GamesActivity : AppCompatActivity() {
             btnOngoing.backgroundTintList = ColorStateList.valueOf(colorUnselected)
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.friendsContainer, GamesFragment())
+                .replace(R.id.gamesContainer, GamesFragment())
                 .commit()
         }
 
@@ -66,7 +67,7 @@ class GamesActivity : AppCompatActivity() {
             btnFinished.backgroundTintList = ColorStateList.valueOf(colorUnselected)
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.friendsContainer, FinishedGameFragment())
+                .replace(R.id.gamesContainer, FinishedGameFragment())
                 .commit()
         }
 
