@@ -96,4 +96,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAmistades"
         app:layout_constraintTop_toTopOf="@+id/btnAmistades" />
+
+    <ImageView
+        android:id="@+id/imgAddFriends"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_person_add_alt_1_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

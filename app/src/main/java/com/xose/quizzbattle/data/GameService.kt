@@ -2,6 +2,7 @@ package com.xose.quizzbattle.data
 
 import com.xose.quizzbattle.model.Friendship
 import com.xose.quizzbattle.model.Game
+import com.xose.quizzbattle.model.User
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -34,6 +35,12 @@ interface GameService {
 
     @PUT("friendship/update/{id}")
     suspend fun acceptFriendship(@Path("id") id: Long): Friendship
+
+    @POST("friendship/create")
+    fun createFriendship(@Query("sender") sender: String, @Query("receiver") receiver: String? = null): Call<Friendship>
+
+    @GET("users/find/all")
+    suspend fun getAllPlayers(@Query("roles") role : String): List<User>
 
 
 
