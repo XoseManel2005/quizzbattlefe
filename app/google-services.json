@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "713816725767",
+    "project_id": "quizzbattle-3f524",
+    "storage_bucket": "quizzbattle-3f524.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713816725767:android:33e34840126224ae9fcda2",
+        "android_client_info": {
+          "package_name": "com.xose.quizzbattle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkfbj9bJI-k0VJhZ7oA0LEKqWjWAXB40s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

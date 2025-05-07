@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'com.google.gms.google-services'
 }
-
 android {
     namespace 'com.xose.quizzbattle'
     compileSdk 33
@@ -49,6 +49,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation platform('com.google.firebase:firebase-bom:30.0.1')
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
+
+

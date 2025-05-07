@@ -1,7 +1,10 @@
 package com.xose.quizzbattle.ui
 
+import android.Manifest
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import retrofit2.Call
@@ -13,7 +16,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.model.LoginRequest
@@ -26,8 +32,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        requestPermissionLauncher
+        askNotificationPermission()
         autoLogin()
-
+        FirebaseApp.initializeApp(this)
         val btnLogin = findViewById<Button>(R.id.btnRegister)
         val tvRegisterIntent = findViewById<TextView>(R.id.tvGenericText)
         val etUsername = findViewById<EditText>(R.id.etUsername)
@@ -52,6 +60,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun login(username: String, password: String) {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                Log.d("FCM", "Token actual: $token")
+                // Aquí puedes enviarlo a tu servidor si lo necesitas
+            } else {
+                Log.w("FCM", "Error al obtener token", task.exception)
+            }
+        }
         if (username.isBlank() || password.isBlank()) {
             Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
             return
@@ -109,6 +126,36 @@ class LoginActivity : AppCompatActivity() {
 
         if (user != null) {
             login(user.username, user.password)
+        }
+    }
+
+    // Declare the launcher at the top of your Activity/Fragment:
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // FCM SDK (and your app) can post notifications.
+        } else {
+            // TODO: Inform user that that your app will not show notifications.
+        }
+    }
+
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // TODO: display an educational UI explaining to the user the features that will be enabled
+                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
+                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
+                //       If the user selects "No thanks," allow the user to continue without notifications.
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
     }
 }
