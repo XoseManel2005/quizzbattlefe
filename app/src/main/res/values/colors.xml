@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="levander">#FFB57EDC</color>
+    <!-- Fondo principal: azul muy claro, casi blanco -->
+    <color name="background_light_blue">#E5F2FF</color> <!-- Alice Blue -->
+
+    <!-- Azul suave para elementos principales -->
+    <color name="primary_blue">#4A90E2</color> <!-- Azul principal -->
+
+    <!-- Azul un poco más oscuro para botones o destacados -->
+    <color name="secondary_blue">#357ABD</color>
+
+    <!-- Azul grisáceo para textos secundarios -->
+    <color name="text_secondary">#6E7F94</color>
+
+    <!-- Blanco puro -->
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Negro para textos principales -->
+    <color name="black">#FF000000</color>
+
+    <!-- Color de acento suave (puedes usarlo para botones, íconos, etc.) -->
+    <color name="accent_mint">#A8E6CF</color>
+
+    <!-- Para errores o alertas -->
+    <color name="error_red">#D32F2F</color>
 </resources>

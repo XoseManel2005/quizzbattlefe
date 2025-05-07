@@ -1,9 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Tema base -->
     <style name="Base.Theme.QuizzBattle" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Fondo claro -->
+        <item name="android:colorBackground">@color/background_light_blue</item>
+
+        <!-- Color primario -->
+        <item name="colorPrimary">@color/primary_blue</item>
+        <item name="colorPrimaryVariant">@color/secondary_blue</item>
+
+        <!-- Color de acento -->
+        <item name="colorSecondary">@color/accent_mint</item>
+
+        <!-- Colores para texto -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
     </style>
 
+    <!-- Tema general -->
     <style name="Theme.QuizzBattle" parent="Base.Theme.QuizzBattle" />
 </resources>

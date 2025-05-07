@@ -63,10 +63,10 @@ class LoginActivity : AppCompatActivity() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val token = task.result
-                Log.d("FCM", "Token actual: $token")
+                Log.d("FCM", "FcmToken actual: $token")
                 // Aquí puedes enviarlo a tu servidor si lo necesitas
             } else {
-                Log.w("FCM", "Error al obtener token", task.exception)
+                Log.w("FCM", "Error al obtener FcmToken", task.exception)
             }
         }
         if (username.isBlank() || password.isBlank()) {
