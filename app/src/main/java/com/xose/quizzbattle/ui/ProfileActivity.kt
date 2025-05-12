@@ -1,13 +1,21 @@
 package com.xose.quizzbattle.ui
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Base64
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.xose.quizzbattle.R
@@ -15,17 +23,46 @@ import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var usuarioLogueado: User
+    private lateinit var imgProfilePic: ImageView
+    private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
         usuarioLogueado = SessionManager(this).getLoggedUser() as User
+        imgProfilePic = findViewById(R.id.imgProfilePic)
 
+        // Registrar el callback aquí, donde ya imgProfilePic está inicializado
+        pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                imgProfilePic.setImageURI(uri)
+
+                // Convertir URI a Base64
+                val inputStream = contentResolver.openInputStream(uri)
+                inputStream?.use {
+                    val bitmap = BitmapFactory.decodeStream(it)
+                    val outputStream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                    val imageBytes = outputStream.toByteArray()
+                    val imageBase64 = Base64.encodeToString(imageBytes, Base64.DEFAULT)
+
+                    Log.d("Base64", imageBase64)
+                }
+            } else {
+                // Imagen no seleccionada
+                Log.d("Base64", "Imagen no seleccionada")
+            }
+        }
+
+        imgProfilePic.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
         val tvLogout = findViewById<TextView>(R.id.tvLogout)
         val btnAddFriend = findViewById<Button>(R.id.btnAddFriend)
         val imgGames = findViewById<ImageView>(R.id.imgGames)
