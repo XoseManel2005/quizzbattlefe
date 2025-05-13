@@ -59,11 +59,14 @@ class FriendsAdapter(
             try {
                 val profileImage = gameService.getProfileImage(user)
 
-                val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
-                val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
-                val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                if (profileImage.imageBase64 != null || !profileImage.imageBase64.isEmpty()) {
+                    val base64Image =
+                        profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
+                    val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
-                holder.imgAvatar.setImageBitmap(bitmap)
+                    holder.imgAvatar.setImageBitmap(bitmap)
+                }
 
             } catch (e: Exception) {
                 e.printStackTrace()

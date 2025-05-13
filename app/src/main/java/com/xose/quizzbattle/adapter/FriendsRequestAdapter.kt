@@ -56,13 +56,14 @@ class FriendsRequestAdapter(
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val profileImage = gameService.getProfileImage(user)
+                if (profileImage.imageBase64 != null || !profileImage.imageBase64.isEmpty()) {
+                    val base64Image =
+                        profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
+                    val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
-                val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
-                val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
-                val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-
-                holder.imgAvatar.setImageBitmap(bitmap)
-
+                    holder.imgAvatar.setImageBitmap(bitmap)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")

@@ -104,22 +104,24 @@ class ProfileActivity : AppCompatActivity() {
             try {
                 val gameService = ApiClient.getGameService(this@ProfileActivity)
                 val profileImage = gameService.getProfileImage(usuarioLogueado.username)
-                try {
-                    // 1. Eliminar el prefijo si existe
-                    val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
+                if (profileImage.imageBase64 != null || !profileImage.imageBase64.isEmpty()){
+                    try {
+                        // 1. Eliminar el prefijo si existe
+                        val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
 
-                    // 2. Decodificar a bytes
-                    val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                        // 2. Decodificar a bytes
+                        val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
 
-                    // 3. Convertir a Bitmap
-                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                        // 3. Convertir a Bitmap
+                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
-                    // 4. Asignar al ImageView
-                    imgProfilePic.setImageBitmap(bitmap)
+                        // 4. Asignar al ImageView
+                        imgProfilePic.setImageBitmap(bitmap)
 
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
+                    }
                 }
                 //recoger todas las amistades
                 val friendships = gameService.getAcceptedFriendships(usuarioLogueado.username)

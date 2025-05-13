@@ -53,21 +53,27 @@ class FinishedGameAdapter(
             try {//PLayer1
                 val profileImage1 = gameService.getProfileImage(partida.player1.username)
 
-                var base64Image = profileImage1.imageBase64.substringAfter("base64,", profileImage1.imageBase64)
-                var imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
-                var bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                if (profileImage1.imageBase64 != null || !profileImage1.imageBase64.isEmpty()) {
+                    val base64Image =
+                        profileImage1.imageBase64.substringAfter("base64,", profileImage1.imageBase64)
+                    val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
-                holder.imgAvatar.setImageBitmap(bitmap)
+                    holder.imgAvatar.setImageBitmap(bitmap)
+                }
 
                 //PLayer1
                 val profileImage2 = gameService.getProfileImage(partida.player2.username)
+                if (profileImage2.imageBase64 != null || !profileImage2.imageBase64.isEmpty()) {
+                    val base64Image = profileImage2.imageBase64.substringAfter(
+                        "base64,",
+                        profileImage2.imageBase64
+                    )
+                    val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
-                base64Image = profileImage2.imageBase64.substringAfter("base64,", profileImage2.imageBase64)
-                imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
-                bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-
-                holder.imgAvatar2.setImageBitmap(bitmap)
-
+                    holder.imgAvatar2.setImageBitmap(bitmap)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
