@@ -2,6 +2,8 @@ package com.xose.quizzbattle.data
 
 import com.xose.quizzbattle.model.Friendship
 import com.xose.quizzbattle.model.Game
+import com.xose.quizzbattle.model.ImageRequest
+import com.xose.quizzbattle.model.ImageResponse
 import com.xose.quizzbattle.model.User
 import retrofit2.Call
 import retrofit2.Response
@@ -39,6 +41,11 @@ interface GameService {
     @POST("friendship/create")
     fun createFriendship(@Query("sender") sender: String, @Query("receiver") receiver: String? = null): Call<Friendship>
 
+    @POST("users/upload/image-profile")
+    fun uploadProfileImage(@Body request: ImageRequest): Call<String>
+
+    @GET("/users/profile-picture/{username}")
+    suspend fun getProfileImage(@Path("username") username: String): ImageResponse
     @GET("users/find/all")
     suspend fun getAllPlayers(@Query("roles") role : String): List<User>
 

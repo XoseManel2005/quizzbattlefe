@@ -32,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        requestPermissionLauncher
         askNotificationPermission()
         autoLogin()
         FirebaseApp.initializeApp(this)
@@ -136,7 +135,8 @@ class LoginActivity : AppCompatActivity() {
         if (isGranted) {
             // FCM SDK (and your app) can post notifications.
         } else {
-            // TODO: Inform user that that your app will not show notifications.
+            // Informar al usuario que no tendrá notificaciones.
+            Toast.makeText(this, "No recibirás notificaciones de la aplicación.", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -147,12 +147,9 @@ class LoginActivity : AppCompatActivity() {
                 PackageManager.PERMISSION_GRANTED
             ) {
                 // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-            } else {
+                // Permiso ya concedido
+                Toast.makeText(this, "Permiso ya concedido para notificaciones.", Toast.LENGTH_SHORT).show()
+            }  else {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
