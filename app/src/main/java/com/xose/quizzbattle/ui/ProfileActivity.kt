@@ -12,7 +12,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,10 +19,14 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
+import com.xose.quizzbattle.model.ImageRequest
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -41,6 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         // Registrar el callback aquí, donde ya imgProfilePic está inicializado
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
+                val gameService = ApiClient.getGameService(this@ProfileActivity)
                 imgProfilePic.setImageURI(uri)
 
                 // Convertir URI a Base64
@@ -50,9 +54,26 @@ class ProfileActivity : AppCompatActivity() {
                     val outputStream = ByteArrayOutputStream()
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
                     val imageBytes = outputStream.toByteArray()
-                    val imageBase64 = Base64.encodeToString(imageBytes, Base64.DEFAULT)
+                    val imageBase64 = Base64.encodeToString(imageBytes, Base64.NO_WRAP)
+                    val imageRequest = ImageRequest(
+                        username = usuarioLogueado.username,
+                        imageBase64 = imageBase64
+                    )
 
-                    Log.d("Base64", imageBase64)
+                    val call: Call<String> = gameService.uploadProfileImage(imageRequest)
+                    call.enqueue(object : Callback<String> {
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            if (response.isSuccessful) {
+                                Log.d("API", "Imagen subida: ${response.body()}")
+                            } else {
+                                Log.e("API", "Error al subir la imagen: ${response.errorBody()?.string()}")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            Log.e("API", "Fallo en la llamada: ${t.message}")
+                        }
+                    })
                 }
             } else {
                 // Imagen no seleccionada
@@ -82,7 +103,24 @@ class ProfileActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val gameService = ApiClient.getGameService(this@ProfileActivity)
+                val profileImage = gameService.getProfileImage(usuarioLogueado.username)
+                try {
+                    // 1. Eliminar el prefijo si existe
+                    val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
 
+                    // 2. Decodificar a bytes
+                    val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+
+                    // 3. Convertir a Bitmap
+                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                    // 4. Asignar al ImageView
+                    imgProfilePic.setImageBitmap(bitmap)
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
+                }
                 //recoger todas las amistades
                 val friendships = gameService.getAcceptedFriendships(usuarioLogueado.username)
                 tvFriends.text = friendships.size.toString()

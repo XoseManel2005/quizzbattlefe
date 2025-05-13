@@ -1,3 +1,6 @@
+import android.graphics.BitmapFactory
+import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -6,8 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.xose.quizzbattle.R
+import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.model.Friendship
 import com.xose.quizzbattle.model.User
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FriendsRequestAdapter(
     private val friends: List<Friendship>,
@@ -35,22 +42,37 @@ class FriendsRequestAdapter(
 
         }
         val friend = friends[position]
+        val user : String
         if (usuarioLogueado.username == friend.sender.username){
             holder.txtNombre.text = friend.receiver.username
-            holder.btnAccept.setOnClickListener {
-                onAcceptClick(friend)
-            }
-            holder.btnDeny.setOnClickListener {
-                onDenyClick(friend)
-            }
+            user = friend.receiver.username
         } else {
             holder.txtNombre.text = friend.sender.username
-            holder.btnAccept.setOnClickListener {
-                onAcceptClick(friend)
+            user = friend.sender.username
+        }
+        val context = holder.itemView.context
+        val gameService = ApiClient.getGameService(context)
+
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val profileImage = gameService.getProfileImage(user)
+
+                val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
+                val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                holder.imgAvatar.setImageBitmap(bitmap)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
             }
-            holder.btnDeny.setOnClickListener {
-                onDenyClick(friend)
-            }
+        }
+        holder.btnAccept.setOnClickListener {
+            onAcceptClick(friend)
+        }
+        holder.btnDeny.setOnClickListener {
+            onDenyClick(friend)
         }
     }
 
