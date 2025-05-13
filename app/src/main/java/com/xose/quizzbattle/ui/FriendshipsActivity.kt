@@ -9,9 +9,8 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import com.xose.quizzbattle.R
-import com.xose.quizzbattle.util.SessionManager
 
-class FrienshipsActivity : AppCompatActivity() {
+class FriendshipsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_frienships)

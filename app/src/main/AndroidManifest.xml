@@ -21,7 +21,7 @@
             android:screenOrientation="portrait"
             android:exported="true" />
         <activity
-            android:name=".ui.FrienshipsActivity"
+            android:name=".ui.FriendshipsActivity"
             android:screenOrientation="portrait"
             android:exported="true" />
         <activity

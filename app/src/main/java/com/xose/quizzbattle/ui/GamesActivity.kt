@@ -72,7 +72,7 @@ class GamesActivity : AppCompatActivity() {
         }
 
         imgFriendships.setOnClickListener{
-            val intent = Intent (this, FrienshipsActivity::class.java)
+            val intent = Intent (this, FriendshipsActivity::class.java)
             startActivity(intent)
             finish()
         }

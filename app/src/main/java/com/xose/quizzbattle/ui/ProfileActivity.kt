@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -15,6 +17,11 @@ import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import kotlinx.coroutines.launch
+import android.util.Log
+import com.google.gson.Gson
+import com.xose.quizzbattle.model.Friendship
+import org.w3c.dom.Text
+
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -30,11 +37,127 @@ class ProfileActivity : AppCompatActivity() {
         val btnAddFriend = findViewById<Button>(R.id.btnAddFriend)
         val imgGames = findViewById<ImageView>(R.id.imgGames)
         val imgFriendship = findViewById<ImageView>(R.id.imgFriendships)
-        val tvUsername = findViewById<TextView>(R.id.tvUsername)
         val tvEmail = findViewById<TextView>(R.id.tvEmail)
 
+        val tvUsername = findViewById<TextView>(R.id.tvUsername)
+        val etUsername = findViewById<EditText>(R.id.etUsername)
+        val imgEditUsername = findViewById<ImageView>(R.id.imgEditUsername)
+        val btnSaveUsername = findViewById<Button>(R.id.btnSaveUsername)
+        val tvChangePassword = findViewById<TextView>(R.id.tvChangePassword)
+
         tvUsername.text = usuarioLogueado.username
-        tvEmail.text = usuarioLogueado.email ?: "Email no disponible"
+        etUsername.setText(usuarioLogueado.username)
+
+        tvEmail.setText(usuarioLogueado.email)
+
+        tvChangePassword.setOnClickListener {
+            val dialogView = layoutInflater.inflate(R.layout.dialog_change_password, null)
+
+            val etNewPassword = dialogView.findViewById<EditText>(R.id.etNewPassword)
+            val etConfirmPassword = dialogView.findViewById<EditText>(R.id.etConfirmPassword)
+
+            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+            builder.setTitle("Cambiar contraseña")
+            builder.setView(dialogView)
+            builder.setPositiveButton("Cambiar") { dialog, _ ->
+                val newPass = etNewPassword.text.toString()
+                val confirmPass = etConfirmPassword.text.toString()
+
+                if (newPass.isEmpty() || confirmPass.isEmpty()) {
+                    showError("Por favor, completa ambos campos.")
+                    return@setPositiveButton
+                }
+
+                if (newPass != confirmPass) {
+                    showError("Las contraseñas no coinciden.")
+                    return@setPositiveButton
+                }
+
+                lifecycleScope.launch {
+                    try {
+                        val gameService = ApiClient.getGameService(this@ProfileActivity)
+
+                        usuarioLogueado.password = newPass
+                        val response = gameService.updateUser(usuarioLogueado)
+
+                        if (response.isSuccessful) {
+                            showMessage("Contraseña actualizada correctamente.")
+                            SessionManager(this@ProfileActivity).saveLoggedUser(usuarioLogueado)
+                        } else {
+                            showError("Error al actualizar la contraseña.")
+                        }
+                    } catch (e: Exception) {
+                        showError("Error: ${e.message}")
+                    }
+                }
+
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.show()
+        }
+
+
+        // Al tocar el icono, ocultar TextView y mostrar EditText + botón
+        imgEditUsername.setOnClickListener {
+            tvUsername.visibility = View.GONE
+            etUsername.visibility = View.VISIBLE
+            imgEditUsername.visibility = View.GONE
+            btnSaveUsername.visibility = View.VISIBLE
+            etUsername.requestFocus()
+        }
+
+        btnSaveUsername.setOnClickListener {
+            val nuevoNombre = etUsername.text.toString().trim()
+            if (nuevoNombre.isNotEmpty()) {
+                lifecycleScope.launch {
+                    try {
+                        val gameService = ApiClient.getGameService(this@ProfileActivity)
+
+                        usuarioLogueado.username = nuevoNombre
+
+                        if (usuarioLogueado.password.isNullOrEmpty()) {
+                            usuarioLogueado.password = "defaultPassword"
+                        }
+
+                        if (usuarioLogueado.email.isNullOrEmpty()) {
+                            usuarioLogueado.email = "placeholder@email.com"
+                        }
+
+                        if (usuarioLogueado.role == null) {
+                            usuarioLogueado.role = User.Role.PLAYER
+                        }
+
+                        Log.d("UPDATE_USER", "Enviando JSON: $usuarioLogueado")
+
+                        val response = gameService.updateUser(usuarioLogueado)
+
+                        Log.d("UPDATE_USER", "Código de respuesta: ${response.code()}")
+
+                        if (response.isSuccessful) {
+                            Log.d("UPDATE_USER", "Actualización exitosa")
+                            SessionManager(this@ProfileActivity).saveLoggedUser(usuarioLogueado)
+                            tvUsername.text = nuevoNombre
+                        } else {
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("UPDATE_USER", "Error al actualizar: $errorBody")
+                        }
+
+                        etUsername.visibility = View.GONE
+                        btnSaveUsername.visibility = View.GONE
+                        tvUsername.visibility = View.VISIBLE
+                        imgEditUsername.visibility = View.VISIBLE
+
+                    } catch (e: Exception) {
+                        Log.e("UPDATE_USER", "Excepción: ${e.message}", e)
+                    }
+                }
+            }
+        }
 
         val tvFriends = findViewById<TextView>(R.id.tvFriends)
 
@@ -95,7 +218,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         btnAddFriend.setOnClickListener {
-            val intent = Intent (this, LoginActivity::class.java)
+            val intent = Intent (this, FriendshipsActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -115,4 +238,21 @@ class ProfileActivity : AppCompatActivity() {
 
 
     }
+
+    private fun showError(message: String) {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Error")
+            .setMessage(message)
+            .setPositiveButton("Aceptar", null)
+            .show()
+    }
+
+    private fun showMessage(message: String) {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Éxito")
+            .setMessage(message)
+            .setPositiveButton("Aceptar", null)
+            .show()
+    }
+
 }

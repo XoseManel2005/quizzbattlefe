@@ -42,7 +42,7 @@ interface GameService {
     @GET("users/find/all")
     suspend fun getAllPlayers(@Query("roles") role : String): List<User>
 
-
-
+    @PUT("users/update")
+    suspend fun updateUser(@Body user: User): Response<User>
 
 }

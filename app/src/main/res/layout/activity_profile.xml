@@ -16,16 +16,46 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img_user" />
 
-    <TextView
-        android:id="@+id/tvUsername"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutEditableUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
-        android:text="Xose Manel"
-        android:textSize="22sp"
         app:layout_constraintStart_toEndOf="@+id/imfProfilePic"
-        app:layout_constraintTop_toTopOf="@+id/imfProfilePic" />
+        app:layout_constraintTop_toTopOf="@+id/imfProfilePic">
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:inputType="textPersonName"
+            android:textSize="22sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/btnSaveUsername"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnSaveUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView
@@ -117,7 +147,7 @@
             android:id="@+id/tvTotalGames"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="37"
+            android:text="0"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -148,7 +178,7 @@
             android:id="@+id/tvWonGames"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22"
+            android:text="0"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -181,7 +211,7 @@
             android:id="@+id/tvFriends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="8"
+            android:text="0"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -196,12 +226,14 @@
     </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp">
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -255,6 +287,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider2" />
+
+    <ImageView
+        android:id="@+id/imgEditUsername"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:contentDescription="Editar nombre"
+        android:src="@android:drawable/ic_menu_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutEditableUsername"
+        app:layout_constraintStart_toEndOf="@+id/layoutEditableUsername"
+        app:layout_constraintTop_toTopOf="@+id/layoutEditableUsername" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
