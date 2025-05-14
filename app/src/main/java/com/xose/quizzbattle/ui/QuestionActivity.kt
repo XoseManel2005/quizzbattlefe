@@ -176,16 +176,9 @@ class QuestionActivity : AppCompatActivity() {
                             ).show()
                         } else {
                             Log.d("QUESTION_RECEIVED", "Pregunta: $question")
-
+                            setImage(question.id)
                             tvQuestion.text = question.statement
                             correctAnswer = question.correctOption
-
-                            if (!question.imageUrl.isNullOrEmpty()) {
-                                Glide.with(this@QuestionActivity).load(question.imageUrl)
-                                    .into(imgQuestion)
-                            } else {
-                                imgQuestion.setImageResource(R.drawable.ic_launcher_background)
-                            }
 
                             val answers = listOfNotNull(
                                 question.correctOption,
@@ -309,6 +302,29 @@ class QuestionActivity : AppCompatActivity() {
         intent.putExtra("SELECTED_GAME", game)
         startActivity(intent)
         finish()
+    }
+
+    private fun setImage(id : Long){
+        val gameService = ApiClient.getGameService(this@QuestionActivity)
+
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val profileImage = gameService.getQuestionImage(id)
+                Log.w("Base64", "Imagen: ${profileImage.imageBase64}")
+                if (!profileImage.imageBase64.isNullOrEmpty()) {
+                    val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
+                    val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                    imgQuestion.setImageBitmap(bitmap)
+                } else {
+                    Log.w("Base64", "Imagen vacía o nula")
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
+            }
+        }
     }
 
 
