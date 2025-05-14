@@ -48,7 +48,7 @@
         android:id="@+id/imgGames"
         android:layout_width="70dp"
         android:layout_height="65dp"
-        android:src="@drawable/play"
+        android:src="@drawable/games"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -65,8 +65,8 @@
 
     <ImageView
         android:id="@+id/imgProfile"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:src="@drawable/img_user"
         app:layout_constraintBottom_toBottomOf="parent"
