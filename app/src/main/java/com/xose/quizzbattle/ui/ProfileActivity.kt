@@ -32,6 +32,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var usuarioLogueado: User
     private lateinit var imgProfilePic: ImageView
+    private lateinit var imgProfileBar: ImageView
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +41,14 @@ class ProfileActivity : AppCompatActivity() {
 
         usuarioLogueado = SessionManager(this).getLoggedUser() as User
         imgProfilePic = findViewById(R.id.imgProfilePic)
+        imgProfileBar = findViewById(R.id.imgProfile)
+
 
         // Registrar el callback aquí, donde ya imgProfilePic está inicializado
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
                 val gameService = ApiClient.getGameService(this@ProfileActivity)
                 imgProfilePic.setImageURI(uri)
-
                 // Convertir URI a Base64
                 val inputStream = contentResolver.openInputStream(uri)
                 inputStream?.use {
@@ -117,7 +119,7 @@ class ProfileActivity : AppCompatActivity() {
 
                         // 4. Asignar al ImageView
                         imgProfilePic.setImageBitmap(bitmap)
-
+                        imgProfileBar.setImageBitmap(bitmap)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
