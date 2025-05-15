@@ -7,7 +7,7 @@
     tools:context=".ui.QuestionActivity">
 
     <ImageView
-        android:id="@+id/imfProfilePic"
+        android:id="@+id/imgProfilePic"
         android:layout_width="50dp"
         android:layout_height="45dp"
         android:layout_marginStart="12dp"
@@ -39,27 +39,27 @@
         android:id="@+id/imgStar1Player1"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imfProfilePic"
-        app:layout_constraintStart_toEndOf="@+id/imfProfilePic"
-        app:layout_constraintTop_toTopOf="@+id/imfProfilePic"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePic"
+        app:layout_constraintStart_toEndOf="@+id/imgProfilePic"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePic"
         app:srcCompat="@drawable/baseline_star_off" />
 
     <ImageView
         android:id="@+id/imgStar2Player1"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imfProfilePic"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePic"
         app:layout_constraintStart_toEndOf="@+id/imgStar1Player1"
-        app:layout_constraintTop_toTopOf="@+id/imfProfilePic"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePic"
         app:srcCompat="@drawable/baseline_star_off" />
 
     <ImageView
         android:id="@+id/imgStar3Player1"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imfProfilePic"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePic"
         app:layout_constraintStart_toEndOf="@+id/imgStar2Player1"
-        app:layout_constraintTop_toTopOf="@+id/imfProfilePic"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePic"
         app:srcCompat="@drawable/baseline_star_off" />
 
     <ImageView
@@ -135,9 +135,9 @@
         android:layout_marginEnd="16dp"
         android:text="/ 5"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imfProfilePic"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imfProfilePic" />
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePic" />
 
     <TextView
         android:id="@+id/tvCurrentPointsPlayer1"

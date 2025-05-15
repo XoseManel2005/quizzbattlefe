@@ -7,7 +7,7 @@
     tools:context=".ui.ProfileActivity">
 
     <ImageView
-        android:id="@+id/imfProfilePic"
+        android:id="@+id/imgProfilePic"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
@@ -21,8 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        app:layout_constraintStart_toEndOf="@+id/imfProfilePic"
-        app:layout_constraintTop_toTopOf="@+id/imfProfilePic">
+        app:layout_constraintStart_toEndOf="@+id/imgProfilePic"
+        app:layout_constraintTop_toTopOf="@+id/imgProfilePic">
 
         <TextView
             android:id="@+id/tvUsername"
@@ -36,25 +36,17 @@
 
         <EditText
             android:id="@+id/etUsername"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:inputType="textPersonName"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textSize="22sp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/btnSaveUsername"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btnSaveUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Guardar"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -68,8 +60,8 @@
         android:textColor="#EA2323"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imfProfilePic"
-        app:layout_constraintStart_toEndOf="@+id/imfProfilePic" />
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfilePic"
+        app:layout_constraintStart_toEndOf="@+id/imgProfilePic" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/materialDivider2"
@@ -79,7 +71,7 @@
         app:dividerColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imfProfilePic" />
+        app:layout_constraintTop_toBottomOf="@+id/imgProfilePic" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
@@ -305,6 +297,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/layoutEditableUsername"
         app:layout_constraintStart_toEndOf="@+id/layoutEditableUsername"
         app:layout_constraintTop_toTopOf="@+id/layoutEditableUsername" />
+
+    <Button
+        android:id="@+id/btnSaveUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Guardar"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

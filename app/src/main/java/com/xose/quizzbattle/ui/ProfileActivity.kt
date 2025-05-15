@@ -25,10 +25,6 @@ import com.xose.quizzbattle.model.ImageRequest
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import kotlinx.coroutines.launch
-import android.util.Log
-import com.google.gson.Gson
-import com.xose.quizzbattle.model.Friendship
-import org.w3c.dom.Text
 
 import java.io.ByteArrayOutputStream
 import retrofit2.Call
@@ -98,7 +94,6 @@ class ProfileActivity : AppCompatActivity() {
         val tvUsername = findViewById<TextView>(R.id.tvUsername)
         val tvEmail = findViewById<TextView>(R.id.tvEmail)
 
-        val tvUsername = findViewById<TextView>(R.id.tvUsername)
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val imgEditUsername = findViewById<ImageView>(R.id.imgEditUsername)
         val btnSaveUsername = findViewById<Button>(R.id.btnSaveUsername)
@@ -296,7 +291,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         btnAddFriend.setOnClickListener {
-            val intent = Intent (this, LoginActivity::class.java)
+            val intent = Intent (this, FriendshipsActivity::class.java)
             startActivity(intent)
             finish()
         }
