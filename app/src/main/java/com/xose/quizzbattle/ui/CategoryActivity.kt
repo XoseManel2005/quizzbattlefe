@@ -48,7 +48,7 @@ class CategoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
-        var imgAvatar: ImageView = findViewById(R.id.imfProfilePic)
+        var imgAvatar: ImageView = findViewById(R.id.imgProfilePic)
         var imgAvatar2: ImageView = findViewById(R.id.imgProfilePlayer2)
         handler = android.os.Handler(mainLooper)
         usuarioLogueado = (SessionManager(this).getLoggedUser() ?: null) as User

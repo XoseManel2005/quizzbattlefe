@@ -305,7 +305,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         imgFriendship.setOnClickListener {
-            val intent = Intent (this, LoginActivity::class.java)
+            val intent = Intent (this, FriendshipsActivity::class.java)
             startActivity(intent)
             finish()
         }

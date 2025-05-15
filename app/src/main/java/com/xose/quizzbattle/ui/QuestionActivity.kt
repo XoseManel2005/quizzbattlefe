@@ -65,7 +65,7 @@ class QuestionActivity : AppCompatActivity() {
         btnAnswer4 = findViewById(R.id.btnAnswer4)
         withdraw = findViewById(R.id.btnWithdraw)
         tvSecondsRemaining = findViewById(R.id.tvSecondsRemaining)
-        imgAvatar = findViewById(R.id.imfProfilePic)
+        imgAvatar = findViewById(R.id.imgProfilePic)
         imgAvatar2 = findViewById(R.id.imgProfilePlayer2)
 
         startCountdown()
