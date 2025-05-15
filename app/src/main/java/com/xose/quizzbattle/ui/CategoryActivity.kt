@@ -1,8 +1,10 @@
 package com.xose.quizzbattle.ui
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
@@ -14,6 +16,9 @@ import com.xose.quizzbattle.model.Category
 import com.xose.quizzbattle.model.Game
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +48,8 @@ class CategoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
-
+        var imgAvatar: ImageView = findViewById(R.id.imfProfilePic)
+        var imgAvatar2: ImageView = findViewById(R.id.imgProfilePlayer2)
         handler = android.os.Handler(mainLooper)
         usuarioLogueado = (SessionManager(this).getLoggedUser() ?: null) as User
         val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
@@ -78,6 +84,42 @@ class CategoryActivity : AppCompatActivity() {
         val imgCategory = findViewById<ImageView>(R.id.imgQuestion)
         val withdraw = findViewById<Button>(R.id.btnWithdraw)
 
+        val gameService = ApiClient.getGameService(this@CategoryActivity)
+
+        GlobalScope.launch(Dispatchers.Main) {
+            try {//PLayer1
+                val profileImage1 = game?.player1?.let { gameService.getProfileImage(it.username) }
+
+                if (profileImage1 != null) {
+                    if (profileImage1.imageBase64 != null || !profileImage1.imageBase64.isEmpty()) {
+                        val base64Image =
+                            profileImage1?.let { profileImage1.imageBase64.substringAfter("base64,", it.imageBase64) }
+                        val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                        imgAvatar.setImageBitmap(bitmap)
+                    }
+                }
+
+                //PLayer1
+                val profileImage2 = game?.player2?.let { gameService.getProfileImage(it.username) }
+                if (profileImage2 != null) {
+                    if (profileImage2.imageBase64 != null || !profileImage2.imageBase64.isEmpty()) {
+                        val base64Image = profileImage2.imageBase64.substringAfter(
+                            "base64,",
+                            profileImage2.imageBase64
+                        )
+                        val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                        imgAvatar2.setImageBitmap(bitmap)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
+            }
+        }
 
         withdraw.setOnClickListener {
             if (game?.player1?.username ?: null  ==  usuarioLogueado.username){

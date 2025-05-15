@@ -1,10 +1,12 @@
 package com.xose.quizzbattle.ui
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
@@ -20,6 +22,9 @@ import com.xose.quizzbattle.model.Game
 import com.xose.quizzbattle.model.Question
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +34,8 @@ class QuestionActivity : AppCompatActivity() {
     private lateinit var usuarioLogueado: User
     private lateinit var tvQuestion: TextView
     private lateinit var imgQuestion: ImageView
+    private lateinit var imgAvatar: ImageView
+    private lateinit var imgAvatar2: ImageView
     private lateinit var btnAnswer1: Button
     private lateinit var btnAnswer2: Button
     private lateinit var btnAnswer3: Button
@@ -58,12 +65,56 @@ class QuestionActivity : AppCompatActivity() {
         btnAnswer4 = findViewById(R.id.btnAnswer4)
         withdraw = findViewById(R.id.btnWithdraw)
         tvSecondsRemaining = findViewById(R.id.tvSecondsRemaining)
+        imgAvatar = findViewById(R.id.imfProfilePic)
+        imgAvatar2 = findViewById(R.id.imgProfilePlayer2)
 
         startCountdown()
 
 
         game = intent.getSerializableExtra("SELECTED_GAME") as? Game
         category = intent.getSerializableExtra("SELECTED_CATEGORY") as? Category
+
+        val gameService = ApiClient.getGameService(this@QuestionActivity)
+
+        GlobalScope.launch(Dispatchers.Main) {
+            try {//PLayer1
+                val profileImage1 = game?.player1?.let { gameService.getProfileImage(it.username) }
+
+                if (profileImage1 != null) {
+                    if (profileImage1.imageBase64 != null || !profileImage1.imageBase64.isEmpty()) {
+                        val base64Image =
+                            profileImage1?.let {
+                                profileImage1.imageBase64.substringAfter(
+                                    "base64,",
+                                    it.imageBase64
+                                )
+                            }
+                        val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                        imgAvatar.setImageBitmap(bitmap)
+                    }
+                }
+
+                //PLayer1
+                val profileImage2 = game?.player2?.let { gameService.getProfileImage(it.username) }
+                if (profileImage2 != null) {
+                    if (profileImage2.imageBase64 != null || !profileImage2.imageBase64.isEmpty()) {
+                        val base64Image = profileImage2.imageBase64.substringAfter(
+                            "base64,",
+                            profileImage2.imageBase64
+                        )
+                        val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                        imgAvatar2.setImageBitmap(bitmap)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
+            }
+        }
 
         withdraw.setOnClickListener {
             if (game?.player1?.username ?: null == game?.turn?.username ?: null) {
@@ -125,16 +176,9 @@ class QuestionActivity : AppCompatActivity() {
                             ).show()
                         } else {
                             Log.d("QUESTION_RECEIVED", "Pregunta: $question")
-
+                            setImage(question.id)
                             tvQuestion.text = question.statement
                             correctAnswer = question.correctOption
-
-                            if (!question.imageUrl.isNullOrEmpty()) {
-                                Glide.with(this@QuestionActivity).load(question.imageUrl)
-                                    .into(imgQuestion)
-                            } else {
-                                imgQuestion.setImageResource(R.drawable.ic_launcher_background)
-                            }
 
                             val answers = listOfNotNull(
                                 question.correctOption,
@@ -258,6 +302,29 @@ class QuestionActivity : AppCompatActivity() {
         intent.putExtra("SELECTED_GAME", game)
         startActivity(intent)
         finish()
+    }
+
+    private fun setImage(id : Long){
+        val gameService = ApiClient.getGameService(this@QuestionActivity)
+
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val profileImage = gameService.getQuestionImage(id)
+                Log.w("Base64", "Imagen: ${profileImage.imageBase64}")
+                if (!profileImage.imageBase64.isNullOrEmpty()) {
+                    val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
+                    val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                    imgQuestion.setImageBitmap(bitmap)
+                } else {
+                    Log.w("Base64", "Imagen vacía o nula")
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
+            }
+        }
     }
 
 

@@ -46,6 +46,9 @@ interface GameService {
 
     @GET("/users/profile-picture/{username}")
     suspend fun getProfileImage(@Path("username") username: String): ImageResponse
+
+    @GET("/questions/image/{id}")
+    suspend fun getQuestionImage(@Path("id") id: Long): ImageResponse
     @GET("users/find/all")
     suspend fun getAllPlayers(@Query("roles") role : String): List<User>
 
