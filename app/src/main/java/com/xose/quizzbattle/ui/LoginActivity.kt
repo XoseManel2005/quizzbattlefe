@@ -30,6 +30,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var usuarioLogueado: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_QuizzBattle)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         askNotificationPermission()
