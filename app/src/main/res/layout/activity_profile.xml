@@ -12,6 +12,7 @@
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:elevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img_user" />
@@ -30,7 +31,10 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"
             android:textSize="22sp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,6 +45,8 @@
             android:background="@android:color/transparent"
             android:ellipsize="end"
             android:maxLines="1"
+            android:layout_marginTop="4dp"
+            android:textStyle="bold"
             android:textSize="22sp"
             android:inputType="textPersonName"
             android:visibility="invisible"
@@ -55,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="6dp"
         android:text="Cerrar Sesión"
         android:textColor="#EA2323"
         android:textSize="16sp"
@@ -64,40 +70,28 @@
         app:layout_constraintStart_toEndOf="@+id/imgProfilePic" />
 
     <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/materialDivider2"
+        android:id="@+id/materialDivider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_marginTop="16dp"
         app:dividerColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgProfilePic" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        tools:ignore="MissingConstraints">
-
-    </com.google.android.material.card.MaterialCardView>
-
 
     <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/materialDivider"
+        android:id="@+id/materialDivider2"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="3dp"
+        android:layout_height="2dp"
         app:dividerColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/imgGames"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/imgProfile"
+        tools:layout_editor_absoluteX="32dp" />
 
     <ImageView
         android:id="@+id/imgGames"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
+        android:layout_width="65dp"
+        android:layout_height="60dp"
         android:src="@drawable/games"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,160 +99,187 @@
 
     <ImageView
         android:id="@+id/imgFriendships"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="32dp"
         android:padding="5dp"
         android:src="@drawable/friends"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/imgProfile"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
-        android:src="@drawable/img_user"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:shapeAppearanceOverlay="@style/CircleImageView" />
+        android:src="@drawable/img_user" />
 
-    <LinearLayout
-        android:id="@+id/llTotalGames"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardTotalGames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_background"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp"
+        android:layout_margin="8dp"
+        android:elevation="6dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="6dp"
         app:layout_constraintBottom_toTopOf="@id/btnAddFriend"
         app:layout_constraintEnd_toStartOf="@+id/tvv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/materialDivider2">
+        app:layout_constraintTop_toBottomOf="@id/materialDivider">
 
-        <TextView
-            android:id="@+id/tvTotalGames"
+        <LinearLayout
+            android:id="@+id/llTotalGames"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="37"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/rounded_background"
+            android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tvlblTotalGames"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Partidas jugadas"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvTotalGames"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="37"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-    <LinearLayout
-        android:id="@+id/llWonGames"
+            <TextView
+                android:id="@+id/tvlblTotalGames"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Partidas jugadas"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardWonGames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_background"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp"
+        android:layout_margin="8dp"
+        android:elevation="6dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="6dp"
         app:layout_constraintBottom_toTopOf="@id/btnAddFriend"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvv"
-        app:layout_constraintTop_toBottomOf="@id/materialDivider2">
+        app:layout_constraintTop_toBottomOf="@id/materialDivider">
 
-        <TextView
-            android:id="@+id/tvWonGames"
+        <LinearLayout
+            android:id="@+id/llWonGames"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/rounded_background"
+            android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tvlblWonGames"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Partidas ganadas"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvWonGames"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="22"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-
-    <LinearLayout
-        android:id="@+id/llFriends"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_background"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnAddFriend"
-        app:layout_constraintEnd_toEndOf="@+id/llTotalGames"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/llTotalGames"
-        app:layout_constraintTop_toTopOf="@+id/btnAddFriend">
-
-        <TextView
-            android:id="@+id/tvFriends"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="8"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvlblFriends"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Amigos"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        tools:ignore="MissingConstraints">
-
+            <TextView
+                android:id="@+id/tvlblWonGames"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Partidas ganadas"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardFriends"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_background"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/materialDivider"
+        android:elevation="6dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAddFriend"
+        app:layout_constraintEnd_toEndOf="@+id/cardTotalGames"
+        app:layout_constraintStart_toStartOf="@+id/cardTotalGames"
+        app:layout_constraintTop_toTopOf="@+id/btnAddFriend">
+
+        <LinearLayout
+            android:id="@+id/llFriends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvFriends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvlblFriends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amigos"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/materialDivider2"
         app:layout_constraintEnd_toEndOf="@+id/btnAddFriend"
-        app:layout_constraintStart_toStartOf="@+id/llFriends"
+        app:layout_constraintStart_toStartOf="@+id/cardFriends"
         app:layout_constraintTop_toBottomOf="@+id/btnAddFriend">
 
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llEmail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ejemplo@gmail.com"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/rounded_background"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvChangePassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="cambiar contraseña"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ejemplo@gmail.com"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvChangePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="cambiar contraseña"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 
     <Button
         android:id="@+id/btnAddFriend"
@@ -266,10 +287,11 @@
         android:layout_height="wrap_content"
         android:text="Añadir amigo"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/materialDivider"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/materialDivider2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvv"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider2" />
+        app:layout_constraintTop_toBottomOf="@+id/materialDivider" />
 
     <TextView
         android:id="@+id/tvv"
@@ -277,7 +299,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider2" />
+        app:layout_constraintTop_toBottomOf="@+id/materialDivider" />
 
     <ImageView
         android:id="@+id/imageView"

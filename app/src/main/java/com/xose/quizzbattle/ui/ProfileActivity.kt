@@ -34,8 +34,31 @@ import retrofit2.Response
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var usuarioLogueado: User
+
+    // ImageViews
     private lateinit var imgProfilePic: ImageView
     private lateinit var imgProfileBar: ImageView
+    private lateinit var imgEditUsername: ImageView
+    private lateinit var imgGames: ImageView
+    private lateinit var imgFriendship: ImageView
+
+    // TextViews
+    private lateinit var tvUsername: TextView
+    private lateinit var tvEmail: TextView
+    private lateinit var tvLogout: TextView
+    private lateinit var tvChangePassword: TextView
+    private lateinit var tvFriends: TextView
+    private lateinit var tvWonGames: TextView
+    private lateinit var tvTotalGames: TextView
+
+    // EditTexts
+    private lateinit var etUsername: EditText
+
+    // Buttons
+    private lateinit var btnSaveUsername: Button
+    private lateinit var btnAddFriend: Button
+
+    // Media picker
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +66,26 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         usuarioLogueado = SessionManager(this).getLoggedUser() as User
+
         imgProfilePic = findViewById(R.id.imgProfilePic)
         imgProfileBar = findViewById(R.id.imgProfile)
+        imgEditUsername = findViewById(R.id.imgEditUsername)
+        imgGames = findViewById(R.id.imgGames)
+        imgFriendship = findViewById(R.id.imgFriendships)
+
+        tvUsername = findViewById(R.id.tvUsername)
+        tvEmail = findViewById(R.id.tvEmail)
+        tvLogout = findViewById(R.id.tvLogout)
+        tvChangePassword = findViewById(R.id.tvChangePassword)
+        tvFriends = findViewById(R.id.tvFriends)
+        tvWonGames = findViewById(R.id.tvWonGames)
+        tvTotalGames = findViewById(R.id.tvTotalGames)
+
+        etUsername = findViewById(R.id.etUsername)
+
+        btnSaveUsername = findViewById(R.id.btnSaveUsername)
+        btnAddFriend = findViewById(R.id.btnAddFriend)
+
 
 
         // Registrar el callback aquí, donde ya imgProfilePic está inicializado
@@ -215,67 +256,12 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
-        val tvFriends = findViewById<TextView>(R.id.tvFriends)
+        loadProfileImage()
+        loadProfileStats()
 
-        val tvWonGames = findViewById<TextView>(R.id.tvWonGames)
-
-        val tvTotalGames = findViewById<TextView>(R.id.tvTotalGames)
-
-        lifecycleScope.launch {
-            try {
-                val gameService = ApiClient.getGameService(this@ProfileActivity)
-                val profileImage = gameService.getProfileImage(usuarioLogueado.username)
-                if (profileImage.imageBase64 != null || !profileImage.imageBase64.isEmpty()){
-                    try {
-                        // 1. Eliminar el prefijo si existe
-                        val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
-
-                        // 2. Decodificar a bytes
-                        val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
-
-                        // 3. Convertir a Bitmap
-                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-
-                        // 4. Asignar al ImageView
-                        imgProfilePic.setImageBitmap(bitmap)
-                        imgProfileBar.setImageBitmap(bitmap)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
-                    }
-                }
-                //recoger todas las amistades
-                val friendships = gameService.getAcceptedFriendships(usuarioLogueado.username)
-                tvFriends.text = friendships.size.toString()
-
-                //obtener partidas terminadas
-                val finishedGames = gameService.getGames(usuarioLogueado.username, "FINISHED")
-
-                //ver partidas ganadas
-                val wonGames = finishedGames.count { game ->
-                    game.winner != null && game.winner.id == usuarioLogueado.id
-                }
-                tvWonGames.text = wonGames.toString()
-
-                //obtener partidas en curso
-                val ongoingGames = gameService.getGames(usuarioLogueado.username, "ONGOING")
-
-                //sumar partidas en curso y acabadas
-                val allGames = finishedGames + ongoingGames
-
-                //las contamos y mostramos como total de partidas
-                val totalGames = allGames.count { game ->
-                    game.player1.id == usuarioLogueado.id || game.player2.id == usuarioLogueado.id
-                }
-                tvTotalGames.text = totalGames.toString()
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-                tvFriends.text = "0"
-                tvWonGames.text = "0"
-                tvTotalGames.text = "0"
-            }
-        }
+        val underlinePasswordText = SpannableString(tvChangePassword.text)
+        underlinePasswordText.setSpan(UnderlineSpan(), 0, underlinePasswordText.length, 0)
+        tvChangePassword.text = underlinePasswordText
 
         val text = "Cerrar Sesión"
         val spannable = SpannableString(text)
@@ -328,6 +314,63 @@ class ProfileActivity : AppCompatActivity() {
             .setMessage(message)
             .setPositiveButton("Aceptar", null)
             .show()
+    }
+
+    private fun loadProfileImage() {
+        lifecycleScope.launch {
+            try {
+                val gameService = ApiClient.getGameService(this@ProfileActivity)
+                val profileImage = gameService.getProfileImage(usuarioLogueado.username)
+
+                if (!profileImage.imageBase64.isNullOrEmpty()) {
+                    try {
+                        val base64Image = profileImage.imageBase64.substringAfter("base64,", profileImage.imageBase64)
+                        val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                        imgProfilePic.setImageBitmap(bitmap)
+                        imgProfileBar.setImageBitmap(bitmap)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("API", "Error al cargar la imagen de perfil: ${e.message}")
+            }
+        }
+    }
+
+    private fun loadProfileStats() {
+        lifecycleScope.launch {
+            try {
+                val gameService = ApiClient.getGameService(this@ProfileActivity)
+
+                val friendships = gameService.getAcceptedFriendships(usuarioLogueado.username)
+                tvFriends.text = friendships.size.toString()
+
+                val finishedGames = gameService.getGames(usuarioLogueado.username, "FINISHED")
+
+                val wonGames = finishedGames.count { game ->
+                    game.winner?.id == usuarioLogueado.id
+                }
+                tvWonGames.text = wonGames.toString()
+
+                val ongoingGames = gameService.getGames(usuarioLogueado.username, "ONGOING")
+                val allGames = finishedGames + ongoingGames
+
+                val totalGames = allGames.count { game ->
+                    game.player1.id == usuarioLogueado.id || game.player2.id == usuarioLogueado.id
+                }
+                tvTotalGames.text = totalGames.toString()
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                tvFriends.text = "0"
+                tvWonGames.text = "0"
+                tvTotalGames.text = "0"
+            }
+        }
     }
 
 }
