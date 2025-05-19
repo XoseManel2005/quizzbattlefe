@@ -18,25 +18,27 @@
         android:layout_marginTop="16dp"/>
 
     <!-- Contenedor de fragments -->
+
     <FrameLayout
         android:id="@+id/gamesContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="4dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@id/imgGames"
+        app:layout_constraintBottom_toTopOf="@id/materialDivider2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAmistades" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAmistades"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/materialDivider"
+        android:id="@+id/materialDivider2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="2dp"
         app:dividerColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/imgGames"
+        app:layout_constraintBottom_toTopOf="@+id/imgProfile"
         tools:layout_editor_absoluteX="32dp" />
 
     <!-- Botones inferiores -->
@@ -51,15 +53,15 @@
 
     <ImageView
         android:id="@+id/imgFriendships"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="32dp"
         android:padding="5dp"
         android:src="@drawable/friends"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/imgProfile"
         android:layout_width="60dp"
         android:layout_height="60dp"
