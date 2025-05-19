@@ -16,6 +16,7 @@ import com.xose.quizzbattle.R
 import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.data.GameService
 import com.xose.quizzbattle.model.Game
+import com.xose.quizzbattle.model.TokenRequest
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import kotlinx.coroutines.launch
@@ -155,4 +156,5 @@ class GamesActivity : AppCompatActivity() {
 
 
     }
+
 }

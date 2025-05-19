@@ -20,6 +20,7 @@ import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.data.GameService
 import com.xose.quizzbattle.model.Friendship
 import com.xose.quizzbattle.model.Game
+import com.xose.quizzbattle.model.TokenRequest
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import kotlinx.coroutines.launch
@@ -93,6 +94,8 @@ class FriendsRequestFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 gameService.acceptFriendship(friendship.id)
+                sendAcceptNotification(usuarioLogueado.username, friendship.sender.fcmToken.toString())
+
                 Toast.makeText(requireContext(), "Solicitud aceptada", Toast.LENGTH_SHORT).show()
                 refreshFriendRequests()
             } catch (e: Exception) {
@@ -107,6 +110,7 @@ class FriendsRequestFragment : Fragment() {
             try {
                 val response = gameService.denyFriendship(friendship.id)
                 if (response.isSuccessful) {
+                    sendDenyNotification(usuarioLogueado.username, friendship.sender.fcmToken.toString())
                     Toast.makeText(requireContext(), "Solicitud rechazada", Toast.LENGTH_SHORT).show()
                     refreshFriendRequests()
                 } else {
@@ -117,6 +121,41 @@ class FriendsRequestFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error al rechazar", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+    private fun sendAcceptNotification(username : String, token : String){
+        val tokenRequest = TokenRequest(token, "Solicitud", "$username ha aceptado la solicitud de amistad")
+        val call: Call<String> = gameService.postNotification(tokenRequest)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    Log.d("API", "Notificacion enviada correctamente: ${response.body()}")
+                } else {
+                    Log.e("API", "Error al enviar la notificacion: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("API", "Fallo en la llamada: ${t.message}")
+            }
+        })
+    }
+
+    private fun sendDenyNotification(username : String, token : String){
+        val tokenRequest = TokenRequest(token, "Solicitud", "$username ha rechazado la solicitud de amistad")
+        val call: Call<String> = gameService.postNotification(tokenRequest)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    Log.d("API", "Notificacion enviada correctamente: ${response.body()}")
+                } else {
+                    Log.e("API", "Error al enviar la notificacion: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("API", "Fallo en la llamada: ${t.message}")
+            }
+        })
     }
 
 
