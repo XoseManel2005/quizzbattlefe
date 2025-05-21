@@ -19,6 +19,7 @@ import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.data.GameService
 import com.xose.quizzbattle.model.Friendship
 import com.xose.quizzbattle.model.Game
+import com.xose.quizzbattle.model.TokenRequest
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import kotlinx.coroutines.launch
@@ -91,6 +92,11 @@ class AddFriendFragment : Fragment() {
                             call.enqueue(object : Callback<Friendship> {
                                 override fun onResponse(call: Call<Friendship>, response: Response<Friendship>) {
                                     if (response.isSuccessful) {
+                                        selectedPlayer.fcmToken?.let {
+                                            sendNotification(usuarioLogueado.username,
+                                                it
+                                            )
+                                        }
                                         loadGames()
                                         Log.e("LOAD_FRIENDSHIP", "Respuesta sin cuerpo")
                                     } else {
@@ -143,5 +149,23 @@ class AddFriendFragment : Fragment() {
                 ).show()
             }
         }
+    }
+
+    private fun sendNotification(username : String, token : String){
+        val tokenRequest = TokenRequest(token, "Solicitud", "$username quiere ser tu amig@")
+        val call: Call<String> = gameService.postNotification(tokenRequest)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    Log.d("API", "Notificacion enviada correctamente: ${response.body()}")
+                } else {
+                    Log.e("API", "Error al enviar la notificacion: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("API", "Fallo en la llamada: ${t.message}")
+            }
+        })
     }
 }

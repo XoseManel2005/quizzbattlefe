@@ -4,6 +4,7 @@ import com.xose.quizzbattle.model.Friendship
 import com.xose.quizzbattle.model.Game
 import com.xose.quizzbattle.model.ImageRequest
 import com.xose.quizzbattle.model.ImageResponse
+import com.xose.quizzbattle.model.TokenRequest
 import com.xose.quizzbattle.model.User
 import retrofit2.Call
 import retrofit2.Response
@@ -51,6 +52,9 @@ interface GameService {
     suspend fun getQuestionImage(@Path("id") id: Long): ImageResponse
     @GET("users/find/all")
     suspend fun getAllPlayers(@Query("roles") role : String): List<User>
+
+    @POST("users/send-notification")
+    fun postNotification(@Body request: TokenRequest): Call<String>
 
     @PUT("users/update")
     suspend fun updateUser(@Body user: User): Response<User>

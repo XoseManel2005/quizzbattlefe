@@ -20,6 +20,7 @@ import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.model.Category
 import com.xose.quizzbattle.model.Game
 import com.xose.quizzbattle.model.Question
+import com.xose.quizzbattle.model.TokenRequest
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
 import kotlinx.coroutines.Dispatchers
@@ -122,6 +123,7 @@ class QuestionActivity : AppCompatActivity() {
             } else {
                 game?.turn = game?.player1
             }
+            game?.turn?.fcmToken?.let { sendChangeNotification(it) }
             game?.let { it1 -> updateGame(it1) }
 
             val intent = Intent(this, GamesActivity::class.java)
@@ -244,11 +246,13 @@ class QuestionActivity : AppCompatActivity() {
 
                     if (game?.starsPlayer1 == 3) {
                         game?.turn = game?.player2
+                        game?.turn?.fcmToken?.let { sendChangeNotification(it) }
                         updateGame(game!!)
                         navigateTo(GamesActivity::class.java)
                         return@postDelayed
                     } else {
                         game?.turn = game?.player2
+                        game?.turn?.fcmToken?.let { sendChangeNotification(it) }
                         updateGame(game!!)
                         navigateTo(CategoryActivity::class.java)
                         return@postDelayed
@@ -268,6 +272,7 @@ class QuestionActivity : AppCompatActivity() {
                         if ((game?.starsPlayer1 ?: 0) < 3) {
                             // Solo jugador 2 tiene 3 estrellas: gana
                             game?.winner = game?.player2!!
+                            game?.winner?.fcmToken?.let { sendWinNotification(it) }
                         }
                         // Si ambos tienen 3 estrellas: empate (winner sigue siendo null por defecto)
 
@@ -276,6 +281,7 @@ class QuestionActivity : AppCompatActivity() {
                         return@postDelayed
                     } else {
                         game?.turn = game?.player1
+                        game?.turn?.fcmToken?.let { sendChangeNotification(it) }
                         updateGame(game!!)
                         navigateTo(CategoryActivity::class.java)
                         return@postDelayed
@@ -287,9 +293,11 @@ class QuestionActivity : AppCompatActivity() {
             handler.postDelayed({
                 if (game?.starsPlayer1 == 3) {
                     game?.winner = game?.player1!!
+                    game?.winner?.fcmToken?.let { sendWinNotification(it) }
                 } else {
                     game?.turn =
-                        if (usuarioLogueado.username == game?.player1?.username) game?.player2 else game?.player1
+                        if (usuarioLogueado.username == game?.player1?.username) game?.player2  else game?.player1
+                    game?.turn?.fcmToken?.let { sendChangeNotification(it) }
                 }
                 updateGame(game!!)
                 navigateTo(GamesActivity::class.java)
@@ -393,7 +401,7 @@ class QuestionActivity : AppCompatActivity() {
         } else {
             game?.turn = game?.player1
         }
-
+        game?.turn?.fcmToken?.let { sendChangeNotification(it) }
         game?.let { updateGame(it) }
 
         val intent = Intent(this, GamesActivity::class.java)
@@ -413,4 +421,41 @@ class QuestionActivity : AppCompatActivity() {
         countdownRunnable?.let { handler.removeCallbacks(it) }
     }
 
+    private fun sendChangeNotification(token: String) {
+        val gameService = ApiClient.getGameService(this@QuestionActivity)
+        val tokenRequest = TokenRequest(token, "Cambio de turno", "¡Es tu turno en la partida!")
+        val call: Call<String> = gameService.postNotification(tokenRequest)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    Log.d("API", "Notificación enviada correctamente: ${response.body()}")
+                } else {
+                    Log.e("API", "Error al enviar la notificación: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("API", "Fallo en la llamada Change: ${t.message}")
+            }
+        })
+    }
+
+    private fun sendWinNotification(token: String) {
+        val gameService = ApiClient.getGameService(this@QuestionActivity)
+        val tokenRequest = TokenRequest(token, "Victoria", "¡Has ganado una partida!")
+        val call: Call<String> = gameService.postNotification(tokenRequest)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    Log.d("API", "Notificación enviada correctamente: ${response.body()}")
+                } else {
+                    Log.e("API", "Error al enviar la notificación: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("API", "Fallo en la llamada Win: ${t.message}")
+            }
+        })
+    }
 }

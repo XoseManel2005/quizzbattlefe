@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.xose.quizzbattle.R
@@ -25,6 +26,7 @@ import com.xose.quizzbattle.data.ApiClient
 import com.xose.quizzbattle.model.LoginRequest
 import com.xose.quizzbattle.model.User
 import com.xose.quizzbattle.util.SessionManager
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var usuarioLogueado: User
@@ -61,15 +63,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun login(username: String, password: String) {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val token = task.result
-                Log.d("FCM", "FcmToken actual: $token")
-                // Aquí puedes enviarlo a tu servidor si lo necesitas
-            } else {
-                Log.w("FCM", "Error al obtener FcmToken", task.exception)
-            }
-        }
+
         if (username.isBlank() || password.isBlank()) {
             Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
             return
@@ -104,6 +98,38 @@ class LoginActivity : AppCompatActivity() {
 
                     Log.d("LoginDebug", "Token guardado: ${sessionManager.getAuthToken()}")
                     Log.d("LoginDebug", "Usuario guardado: ${sessionManager.getLoggedUser().toString()}")
+
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val token = task.result
+                            Log.d("FCM", "FcmToken actual: $token")
+                            if (user != null) {
+                                if (user.fcmToken == null || user.fcmToken != token) {
+                                    lifecycleScope.launch {
+                                        try {
+                                            val gameService =
+                                                ApiClient.getGameService(this@LoginActivity)
+
+                                            user.fcmToken = token
+                                            val response = gameService.updateUser(user)
+
+                                            if (response.isSuccessful) {
+                                                SessionManager(this@LoginActivity).saveLoggedUser(
+                                                    user
+                                                )
+                                            }
+                                        } catch (e: Exception) {
+                                            Toast.makeText(this@LoginActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                                            e.printStackTrace()
+                                        }
+                                    }
+                                }
+                            }
+                            // Aquí puedes enviarlo a tu servidor si lo necesitas
+                        } else {
+                            Log.w("FCM", "Error al obtener FcmToken", task.exception)
+                        }
+                    }
 
                     val intent = Intent(this@LoginActivity, GamesActivity::class.java)
                     startActivity(intent)
