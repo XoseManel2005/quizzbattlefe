@@ -2,6 +2,7 @@ package com.xose.quizzbattle.ui
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
@@ -29,6 +30,9 @@ class CategoryActivity : AppCompatActivity() {
     private lateinit var handler: android.os.Handler
     private var rouletteRunnable: Runnable? = null
 
+    private lateinit var soundPool: SoundPool
+    private var soundId: Int = 0
+
     private val localCategoryImages = listOf(
         R.drawable.category_science,
         R.drawable.category_sports,
@@ -50,6 +54,12 @@ class CategoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_category)
         var imgAvatar: ImageView = findViewById(R.id.imgProfilePic)
         var imgAvatar2: ImageView = findViewById(R.id.imgProfilePlayer2)
+
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(1)
+            .build()
+
+        soundId = soundPool.load(this, R.raw.tic_sound, 1)
         handler = android.os.Handler(mainLooper)
         usuarioLogueado = (SessionManager(this).getLoggedUser() ?: null) as User
         val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
@@ -169,12 +179,13 @@ class CategoryActivity : AppCompatActivity() {
     private fun startImageRoulette(imageView: ImageView, categories: List<Category>) {
         var index = 0
         var interval: Long = 70
-        val totalDuration = 4000L
+        val totalDuration = 4500L
         val startTime = System.currentTimeMillis()
 
         rouletteRunnable = object : Runnable {
             override fun run() {
                 imageView.setImageResource(localCategoryImages[index % localCategoryImages.size])
+                soundPool.play(soundId, 1f, 1f, 0, 0, 1f)
                 index++
 
                 val elapsed = System.currentTimeMillis() - startTime
@@ -191,7 +202,6 @@ class CategoryActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.tvCategory).text =
                         "Categoría: ${finalCategory?.name ?: "Desconocida"}"
 
-                    // ⚠️ Usar el mismo handler para el siguiente retraso
                     rouletteRunnable = Runnable {
                         finalCategory?.let { category ->
                             val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
@@ -243,6 +253,7 @@ class CategoryActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         rouletteRunnable?.let { handler.removeCallbacks(it) }
+        soundPool.release()
     }
 
 }

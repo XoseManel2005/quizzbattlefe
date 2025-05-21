@@ -366,6 +366,10 @@ class QuestionActivity : AppCompatActivity() {
                 timeRemaining--
                 tvSecondsRemaining.text = timeRemaining.toString()
 
+                if (timeRemaining == 7) {
+                    playSound(R.raw.tictac_sound)
+                }
+
                 if (timeRemaining > 0) {
                     handler.postDelayed(this, 1000)
                 } else {
