@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 
 class FinishedGameFragment : Fragment() {
     private lateinit var recyclerViewFinished: RecyclerView
+    private lateinit var tvNoFinishedGames: TextView
     private lateinit var adapterFinished: FinishedGameAdapter
     private lateinit var gameService: GameService
     private lateinit var usuarioLogueado: User
@@ -40,6 +42,7 @@ class FinishedGameFragment : Fragment() {
             loadFinishedGames()
         }
 
+        tvNoFinishedGames =  view.findViewById(R.id.tvNoFinishedGames)
         usuarioLogueado = SessionManager(requireContext()).getLoggedUser() ?: return view
         gameService = ApiClient.getGameService(requireContext())
 
@@ -53,6 +56,9 @@ class FinishedGameFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = true
             try {
                 val games = gameService.getGames(usuarioLogueado.username, Game.Status.FINISHED.toString())
+                if (games.isNullOrEmpty()){
+                    tvNoFinishedGames.visibility = View.VISIBLE
+                }
                 adapterFinished = FinishedGameAdapter(games, usuarioLogueado)
                 recyclerViewFinished.adapter = adapterFinished
             } catch (e: Exception) {
