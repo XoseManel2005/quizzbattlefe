@@ -23,4 +23,8 @@
 
     <!-- Para errores o alertas -->
     <color name="error_red">#D32F2F</color>
+
+    <color name="correctAnswer">#4CAF50</color> <!-- Verde -->
+    <color name="wrongAnswer">#F44336</color>   <!-- Rojo -->
+
 </resources>
