@@ -233,7 +233,10 @@ class QuestionActivity : AppCompatActivity() {
         buttons.forEach { it.setOnClickListener(null) }
         withdraw.setOnClickListener { null }
 
+        val correctButton = buttons.find { it.text == correctAnswer }
+
         if (selectedAnswer == correctAnswer) {
+            correctButton?.setBackgroundColor(getColor(R.color.correctAnswer))
             playSound(R.raw.correct_answer)
             handler.postDelayed({
 
@@ -289,6 +292,8 @@ class QuestionActivity : AppCompatActivity() {
                 }
             }, 2000)
         } else {
+            selectedButton.setBackgroundColor(getColor(R.color.wrongAnswer))
+            correctButton?.setBackgroundColor(getColor(R.color.correctAnswer))
             playSound(R.raw.wrong_answer)
             handler.postDelayed({
                 if (game?.starsPlayer1 == 3) {
@@ -373,6 +378,10 @@ class QuestionActivity : AppCompatActivity() {
             override fun run() {
                 timeRemaining--
                 tvSecondsRemaining.text = timeRemaining.toString()
+
+                if (timeRemaining == 7) {
+                    playSound(R.raw.tictac_sound)
+                }
 
                 if (timeRemaining > 0) {
                     handler.postDelayed(this, 1000)
