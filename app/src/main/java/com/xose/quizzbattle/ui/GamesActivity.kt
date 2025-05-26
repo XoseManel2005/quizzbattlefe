@@ -74,8 +74,8 @@ class GamesActivity : AppCompatActivity() {
             }
         }
 
-        val colorSelected = Color.parseColor("#56000000") // más oscuro
-        val colorUnselected = Color.parseColor("#00000000") // transparente
+        val colorSelected = Color.parseColor("#CBE5FF")
+        val colorUnselected = Color.parseColor("#4A90E2")
 
         // Cambiar colores
         btnFinished.backgroundTintList = ColorStateList.valueOf(colorSelected)
