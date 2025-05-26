@@ -2,7 +2,7 @@
 <resources>
     <!-- Fondo principal: azul muy claro, casi blanco -->
     <color name="background_light_blue">#E5F2FF</color> <!-- Alice Blue -->
-
+    E5F2FF
     <!-- Azul suave para elementos principales -->
     <color name="primary_blue">#4A90E2</color> <!-- Azul principal -->
 

@@ -7,9 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -29,6 +32,16 @@ class GamesFragment : Fragment() {
     private lateinit var gameService: GameService
     private lateinit var usuarioLogueado: User
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var tvNoGames: TextView
+    private lateinit var tvRival: TextView
+    private lateinit var tvTurn: TextView
+    private lateinit var divTurn: View
+    private lateinit var divRival: View
+
+
+
+
+
 
 
     override fun onCreateView(
@@ -51,6 +64,15 @@ class GamesFragment : Fragment() {
             loadGames()
         }
 
+        tvNoGames = view.findViewById(R.id.tvNoTurnGames)
+        tvRival = view.findViewById(R.id.tvRival)
+        tvTurn = view.findViewById(R.id.tvturn)
+        divRival = view.findViewById(R.id.divRival)
+        divTurn = view.findViewById(R.id.divTurn)
+
+
+
+
         // Cargar datos solo una vez desde la función correcta
         loadGames()
 
@@ -65,6 +87,23 @@ class GamesFragment : Fragment() {
                 val games = gameService.getGames(usuarioLogueado.username, Game.Status.ONGOING.toString())
                 val userGames = games.filter { it.turn?.username == usuarioLogueado.username }
                 val rivalGames = games.filter { it.turn?.username != usuarioLogueado.username }
+                if (userGames.isNullOrEmpty() && rivalGames.isNullOrEmpty()){
+                    tvTurn.visibility = View.GONE
+                    divTurn.visibility = View.GONE
+                    tvRival.visibility = View.GONE
+                    divRival.visibility = View.GONE
+                    tvNoGames.visibility = View.VISIBLE
+                } else {
+                    if (userGames == null || userGames.isEmpty()){
+                        tvTurn.visibility = View.GONE
+                        divTurn.visibility = View.GONE
+                    }
+
+                    if (rivalGames == null || rivalGames.isEmpty()){
+
+                    }
+                }
+
 
                 recyclerView.adapter = GameAdapter(userGames, usuarioLogueado) { selectedGame ->
                     val intent = Intent(requireContext(), CategoryActivity::class.java)

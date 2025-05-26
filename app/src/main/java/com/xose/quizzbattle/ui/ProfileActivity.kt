@@ -93,6 +93,7 @@ class ProfileActivity : AppCompatActivity() {
             if (uri != null) {
                 val gameService = ApiClient.getGameService(this@ProfileActivity)
                 imgProfilePic.setImageURI(uri)
+                imgProfileBar.setImageURI(uri)
                 // Convertir URI a Base64
                 val inputStream = contentResolver.openInputStream(uri)
                 inputStream?.use {

@@ -38,6 +38,7 @@ class GameAdapter(
     override fun getItemCount(): Int = partidas.size
 
     override fun onBindViewHolder(holder: PartidaViewHolder, position: Int) {
+
         val partida = partidas[position]
 
         val esTurnoDelUsuario = partida.turn?.username == usuarioLogueado.username
@@ -68,7 +69,7 @@ class GameAdapter(
             }
         }
 
-        holder.txtNombre.text = oponente?.username ?: "Desconocido"
+        holder.txtNombre.text = oponente?.username
         holder.txtResultado.text = "$puntosUsuario-$puntosOponente"
         holder.btnJugar.visibility = if (esTurnoDelUsuario && partida.status == Game.Status.ONGOING) View.VISIBLE else View.GONE
 
