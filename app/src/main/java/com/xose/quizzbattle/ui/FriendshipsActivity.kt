@@ -2,15 +2,26 @@ package com.xose.quizzbattle.ui
 
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.xose.quizzbattle.R
+import com.xose.quizzbattle.data.ApiClient
+import com.xose.quizzbattle.data.GameService
+import com.xose.quizzbattle.model.User
+import com.xose.quizzbattle.util.SessionManager
+import kotlinx.coroutines.launch
 
 class FriendshipsActivity : AppCompatActivity() {
+    private lateinit var gameService: GameService
+    private lateinit var usuarioLogueado: User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_frienships)
@@ -22,6 +33,38 @@ class FriendshipsActivity : AppCompatActivity() {
         val imgFriendships = findViewById<ImageView>(R.id.imgFriendships)
         val imgProfile = findViewById<ImageView>(R.id.imgProfile)
         val imgAddFriends = findViewById<ImageView>(R.id.imgAddFriends)
+        usuarioLogueado = SessionManager(this).getLoggedUser()!!
+
+        lifecycleScope.launch {
+            try {
+                val gameService = ApiClient.getGameService(this@FriendshipsActivity)
+                val profileImage = gameService.getProfileImage(usuarioLogueado.username)
+                if (profileImage.imageBase64 != null || !profileImage.imageBase64.isEmpty()) {
+                    try {
+                        // 1. Eliminar el prefijo si existe
+                        val base64Image = profileImage.imageBase64.substringAfter(
+                            "base64,",
+                            profileImage.imageBase64
+                        )
+
+                        // 2. Decodificar a bytes
+                        val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+
+                        // 3. Convertir a Bitmap
+                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                        // 4. Asignar al ImageView
+                        imgProfile.setImageBitmap(bitmap)
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Log.e("Base64", "Error al convertir la imagen Base64: ${e.message}")
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.gamesContainer, FriendsFragment())

@@ -39,13 +39,14 @@
         android:layout_height="2dp"
         app:dividerColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/imgProfile"
-        tools:layout_editor_absoluteX="32dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Botones inferiores -->
     <ImageView
         android:id="@+id/imgGames"
         android:layout_width="80dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:src="@drawable/startgame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,11 +62,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgProfile"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:shapeAppearanceOverlay="@style/CircleImageView"
@@ -81,7 +84,7 @@
         app:cornerRadius="0dp"
         app:layout_constraintEnd_toStartOf="@+id/btnSolicitudes"
         app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="@+id/gamesContainer"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvQuizzBattle3" />
 
 
@@ -92,7 +95,7 @@
         android:text="ACABADAS"
         android:textColor="#000000"
         app:cornerRadius="0dp"
-        app:layout_constraintEnd_toEndOf="@+id/gamesContainer"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAmistades"
         app:layout_constraintTop_toTopOf="@+id/btnAmistades" />
 

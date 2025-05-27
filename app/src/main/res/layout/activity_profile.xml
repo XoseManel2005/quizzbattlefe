@@ -6,15 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.ProfileActivity">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgProfilePic"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:elevation="4dp"
+        android:elevation="8dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/CircleImageView"
         app:srcCompat="@drawable/img_user" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -107,14 +109,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgProfile"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/img_user" />
+        app:shapeAppearanceOverlay="@style/CircleImageView"
+        app:srcCompat="@drawable/img_user" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardTotalGames"
