@@ -32,6 +32,7 @@ class CategoryActivity : AppCompatActivity() {
 
     private lateinit var soundPool: SoundPool
     private var soundId: Int = 0
+    private var game: Game? = null
 
     private val localCategoryImages = listOf(
         R.drawable.category_science,
@@ -62,7 +63,7 @@ class CategoryActivity : AppCompatActivity() {
         soundId = soundPool.load(this, R.raw.tic_sound, 1)
         handler = android.os.Handler(mainLooper)
         usuarioLogueado = (SessionManager(this).getLoggedUser() ?: null) as User
-        val game = intent.getSerializableExtra("SELECTED_GAME") as? Game
+        game = (intent.getSerializableExtra("SELECTED_GAME") as? Game)!!
         game?.let { gameData ->
             // Actualizar estrellas del jugador 1
             val starsPlayer1 = listOf(
@@ -252,8 +253,17 @@ class CategoryActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        if (game?.player1?.username ?: null  ==  usuarioLogueado.username){
+            game?.turn = game?.player2
+        } else {
+            game?.turn = game?.player1
+        }
+        game?.let { it1 -> updateGame(it1) }
+
         rouletteRunnable?.let { handler.removeCallbacks(it) }
         soundPool.release()
+
     }
 
 }
