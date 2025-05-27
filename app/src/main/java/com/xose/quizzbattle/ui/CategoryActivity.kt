@@ -254,13 +254,6 @@ class CategoryActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (game?.player1?.username ?: null  ==  usuarioLogueado.username){
-            game?.turn = game?.player2
-        } else {
-            game?.turn = game?.player1
-        }
-        game?.let { it1 -> updateGame(it1) }
-
         rouletteRunnable?.let { handler.removeCallbacks(it) }
         soundPool.release()
 

@@ -424,14 +424,6 @@ class QuestionActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (game?.player1?.username ?: null == game?.turn?.username ?: null) {
-            game?.turn = game?.player2
-        } else {
-            game?.turn = game?.player1
-        }
-        game?.turn?.fcmToken?.let { sendChangeNotification(it) }
-        game?.let { it1 -> updateGame(it1) }
-
         mediaPlayer?.release()
         countdownRunnable?.let { handler.removeCallbacks(it) }
     }
