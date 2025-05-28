@@ -299,6 +299,8 @@ class QuestionActivity : AppCompatActivity() {
             handler.postDelayed({
                 if (game?.starsPlayer1 == 3) {
                     game?.winner = game?.player1!!
+                    game?.status = Game.Status.FINISHED
+                    game?.turn = null
                     game?.winner?.fcmToken?.let { sendWinNotification(it) }
                 } else {
                     game?.turn =
