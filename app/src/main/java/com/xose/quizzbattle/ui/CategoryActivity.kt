@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -94,6 +95,11 @@ class CategoryActivity : AppCompatActivity() {
 
         val imgCategory = findViewById<ImageView>(R.id.imgQuestion)
         val withdraw = findViewById<Button>(R.id.btnWithdraw)
+        withdraw.visibility = View.INVISIBLE
+        val tvSelectingCategory = findViewById<TextView>(R.id.tvSelectingCategory)
+        tvSelectingCategory.visibility = View.INVISIBLE
+
+
 
         val gameService = ApiClient.getGameService(this@CategoryActivity)
 

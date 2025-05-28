@@ -27,11 +27,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="La categoria de la pregunta es..."
-        android:layout_marginTop="15dp"
         app:layout_constraintBottom_toTopOf="@+id/imgQuestion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSelectingCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <Button
         android:id="@+id/btnWithdraw"

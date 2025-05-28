@@ -4,14 +4,16 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <!-- Base amarilla -->
+    <!-- Borde negro -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="1.5"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:pathData="M22,9.24l-7.19,-0.62L12,2 9.19,8.63 2,9.24l5.46,4.73L5.82,21 12,17.27 18.18,21l-1.63,-7.03L22,9.24z" />
+
+    <!-- Interior amarillo -->
     <path
         android:fillColor="#FFD600"
-        android:pathData="M12,17.27L18.18,21l-1.64,-7.03L22,9.24l-7.19,-0.61L12,2 9.19,8.63 2,9.24l5.46,4.73L5.82,21z"/>
-
-    <!-- Simulación de brillo con contorno interior -->
-    <path
-        android:fillColor="#72FBE72E"
-        android:fillAlpha="0.6"
-        android:pathData="M12,15.5L17,19l-1.2,-5.3L20.5,10l-5.3,-0.4L12,4.5 8.8,9.6 3.5,10l4.7,3.7L7,19z"/>
+        android:pathData="M22,9.24l-7.19,-0.62L12,2 9.19,8.63 2,9.24l5.46,4.73L5.82,21 12,17.27 18.18,21l-1.63,-7.03L22,9.24z" />
 </vector>
