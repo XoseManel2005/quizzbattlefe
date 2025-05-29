@@ -255,8 +255,6 @@ class QuestionActivity : AppCompatActivity() {
                         navigateTo(GamesActivity::class.java)
                         return@postDelayed
                     } else {
-                        game?.turn = game?.player2
-                        game?.turn?.fcmToken?.let { sendChangeNotification(it) }
                         updateGame(game!!)
                         navigateTo(CategoryActivity::class.java)
                         return@postDelayed
@@ -284,8 +282,6 @@ class QuestionActivity : AppCompatActivity() {
                         navigateTo(GamesActivity::class.java)
                         return@postDelayed
                     } else {
-                        game?.turn = game?.player1
-                        game?.turn?.fcmToken?.let { sendChangeNotification(it) }
                         updateGame(game!!)
                         navigateTo(CategoryActivity::class.java)
                         return@postDelayed
